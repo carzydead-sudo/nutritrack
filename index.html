@@ -231,6 +231,32 @@ nav{
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 #toast.ok{border-color:rgba(200,255,0,.4);color:var(--acc);}
 #sc-hoy{padding-bottom:calc(var(--nav-h) + var(--sb) + 58px + 16px);}
+
+/* stats déficit/superávit */
+.deficit-card{
+  margin:0 14px 10px;border-radius:18px;padding:16px 18px;
+  display:flex;align-items:center;gap:14px;
+  border:1px solid var(--border);
+}
+.deficit-card.green{background:rgba(46,204,113,.08);border-color:rgba(46,204,113,.2);}
+.deficit-card.red{background:rgba(255,107,107,.08);border-color:rgba(255,107,107,.2);}
+.deficit-card.neutral{background:var(--s1);}
+.dc-icon{font-size:28px;flex-shrink:0;}
+.dc-info{flex:1;}
+.dc-label{font-size:10px;font-weight:800;color:var(--muted2);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:3px;}
+.dc-val{font-size:28px;font-weight:900;line-height:1;}
+.dc-val.green{color:#2ecc71;}
+.dc-val.red{color:var(--prot);}
+.dc-val.neutral{color:var(--muted2);}
+.dc-sub{font-size:11px;color:var(--muted2);margin-top:3px;}
+.balance-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 14px 10px;}
+.bg-card{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:13px 14px;}
+.bg-card .bv{font-size:20px;font-weight:900;line-height:1;}
+.bg-card .bl{font-size:9px;color:var(--muted2);font-weight:600;margin-top:4px;text-transform:uppercase;letter-spacing:.5px;}
+.bg-card.acc{background:var(--acc-dim);border-color:rgba(200,255,0,.2);}
+.bg-card.acc .bv{color:var(--acc);}
+.bg-card.fire{background:rgba(255,107,107,.08);border-color:rgba(255,107,107,.2);}
+.bg-card.fire .bv{color:var(--prot);}
 </style>
 </head>
 <body>
@@ -323,6 +349,35 @@ nav{
     <!-- HISTORIAL -->
     <section class="screen" id="sc-hist">
       <div class="ph"><div class="ptitle">Historial</div></div>
+      <!-- STATS DÉFICIT HOY -->
+      <div id="deficit-section">
+        <div class="deficit-card neutral" id="deficit-card">
+          <div class="dc-icon" id="deficit-icon">⚖️</div>
+          <div class="dc-info">
+            <div class="dc-label">BALANCE CALÓRICO HOY</div>
+            <div class="dc-val neutral" id="deficit-val">—</div>
+            <div class="dc-sub" id="deficit-sub">Registrá comidas para ver el balance</div>
+          </div>
+        </div>
+        <div class="balance-grid">
+          <div class="bg-card acc">
+            <div class="bv" id="bg-ingeridas">—</div>
+            <div class="bl">Ingeridas</div>
+          </div>
+          <div class="bg-card fire">
+            <div class="bv" id="bg-quemadas">—</div>
+            <div class="bl">Quemadas</div>
+          </div>
+          <div class="bg-card">
+            <div class="bv" id="bg-meta">—</div>
+            <div class="bl">Meta kcal</div>
+          </div>
+          <div class="bg-card">
+            <div class="bv" id="bg-netas">—</div>
+            <div class="bl">Netas</div>
+          </div>
+        </div>
+      </div>
       <div class="cchart">
         <div class="chdr">
           <div class="ctitle">CALORÍAS POR DÍA</div>
@@ -667,37 +722,41 @@ document.getElementById('fav-btn').onclick=()=>{
   renderList();
 };
 
-// ── WEB SEARCH ──
+// ── WEB SEARCH (Open Food Facts) ──
 async function doWebSearch(query){
   try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',
-        max_tokens:1000,
-        tools:[{"type":"web_search_20250305","name":"web_search"}],
-        messages:[{role:'user',content:`Busca información nutricional de: "${query}". Devuelve SOLO un JSON array (sin explicaciones, sin markdown) con hasta 4 variantes. Formato exacto: [{"name":"nombre","brand":"marca/restaurante o vacío","portion":100,"unit":"g","prot":10,"fat":5,"carb":20,"kcal":165,"notes":"descripción corta"}]. Para unit: g, ml, u. Si no hay datos devuelve [].`}]
-      })
-    });
+    const url='https://world.openfoodfacts.org/cgi/search.pl?search_terms='+encodeURIComponent(query)+'&json=1&page_size=8&fields=product_name,brands,nutriments,quantity';
+    const res=await fetch(url);
     const data=await res.json();
-    let text='';
-    (data.content||[]).forEach(b=>{if(b.type==='text')text+=b.text;});
-    const m=text.match(/\[[\s\S]*?\]/);
-    if(m){
-      webRes=JSON.parse(m[0]).map((r,i)=>({
-        id:'w'+Date.now()+i,name:r.brand?`${r.name} (${r.brand})`:r.name,
-        cat:'Resultado web',porc:r.portion||100,unit:r.unit||'g',
-        prot:+r.prot||0,fat:+r.fat||0,carb:+r.carb||0,sat:0,kcal:+r.kcal||0,notes:r.notes||''
-      }));
-      renderWebList(webRes);
-    } else {
-      document.getElementById('rlist').innerHTML='<div class="empty"><p>No se encontró información nutricional</p></div>';
+    if(!data.products||!data.products.length){
+      document.getElementById('rlist').innerHTML='<div class="empty"><p>Sin resultados para <b>'+query+'</b></p></div>';
+      return;
     }
+    webRes=data.products
+      .filter(p=>p.product_name&&p.nutriments)
+      .slice(0,6)
+      .map((p,i)=>{
+        const n=p.nutriments;
+        const prot=+(n['proteins_100g']||n['proteins']||0).toFixed(1);
+        const fat=+(n['fat_100g']||n['fat']||0).toFixed(1);
+        const carb=+(n['carbohydrates_100g']||n['carbohydrates']||0).toFixed(1);
+        const kcal=Math.round(n['energy-kcal_100g']||n['energy-kcal']||(n['energy_100g']||0)/4.184||0);
+        const brand=p.brands?p.brands.split(',')[0].trim():'';
+        return{id:'w'+Date.now()+i,name:p.product_name,cat:'Resultado web',
+          porc:100,unit:'g',prot,fat,carb,sat:+(n['saturated-fat_100g']||0).toFixed(1),
+          kcal,notes:brand};
+      })
+      .filter(p=>p.kcal>0||p.prot>0);
+    if(!webRes.length){
+      document.getElementById('rlist').innerHTML='<div class="empty"><p>No se encontraron datos nutricionales</p></div>';
+      return;
+    }
+    renderWebList(webRes);
   }catch(e){
-    document.getElementById('rlist').innerHTML='<div class="empty"><p>Error de conexión. Intentá de nuevo.</p></div>';
+    document.getElementById('rlist').innerHTML='<div class="empty"><p>Error de conexión. Verificá el internet.</p></div>';
   }
 }
+
 function renderWebList(list){
   if(!list.length){document.getElementById('rlist').innerHTML='<div class="empty"><p>Sin resultados</p></div>';return;}
   document.getElementById('rlist').innerHTML=list.map(f=>`
@@ -714,6 +773,43 @@ const DAYS=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
 const MONTHS=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
 function renderHist(){
   const today=new Date();today.setHours(0,0,0,0);
+  // ── déficit/superávit de hoy ──
+  const todayDay=getDay(dk(today));
+  let todayKcal=0, todayProt=0;
+  todayDay.foods.forEach(f=>{todayKcal+=f.kcal; todayProt+=f.prot;});
+  const todayBurned=todayDay.burned||0;
+  const todayNetas=todayKcal-todayBurned;
+  const balance=todayNetas-cfg.goalKcal;
+  const defCard=document.getElementById('deficit-card');
+  const defVal=document.getElementById('deficit-val');
+  const defSub=document.getElementById('deficit-sub');
+  const defIcon=document.getElementById('deficit-icon');
+  document.getElementById('bg-ingeridas').textContent=Math.round(todayKcal)+' kcal';
+  document.getElementById('bg-quemadas').textContent=Math.round(todayBurned)+' kcal';
+  document.getElementById('bg-meta').textContent=Math.round(cfg.goalKcal)+' kcal';
+  document.getElementById('bg-netas').textContent=Math.round(todayNetas)+' kcal';
+  if(todayKcal===0){
+    defCard.className='deficit-card neutral';
+    defVal.className='dc-val neutral'; defVal.textContent='—';
+    defIcon.textContent='⚖️';
+    defSub.textContent='Sin comidas registradas hoy';
+  } else if(balance<0){
+    const def=Math.abs(balance);
+    defCard.className='deficit-card green';
+    defVal.className='dc-val green'; defVal.textContent='-'+Math.round(def)+' kcal';
+    defIcon.textContent='📉';
+    defSub.textContent='Déficit calórico · Meta: '+Math.round(cfg.goalKcal)+' kcal';
+  } else if(balance>0){
+    defCard.className='deficit-card red';
+    defVal.className='dc-val red'; defVal.textContent='+'+Math.round(balance)+' kcal';
+    defIcon.textContent='📈';
+    defSub.textContent='Superávit calórico · Meta: '+Math.round(cfg.goalKcal)+' kcal';
+  } else {
+    defCard.className='deficit-card neutral';
+    defVal.className='dc-val neutral'; defVal.textContent='En meta';
+    defIcon.textContent='🎯';
+    defSub.textContent='Exactamente en tu meta calórica';
+  }
   const days=[];
   for(let i=period-1;i>=0;i--){
     const d=new Date(today.getTime()-i*86400000);
