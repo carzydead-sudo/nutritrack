@@ -14,48 +14,69 @@
 :root{
   --bg:#0b0b10;--s1:#14141c;--s2:#1e1e28;--s3:#28283a;
   --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.12);
-  --acc:#c8ff00;--acc-dim:rgba(200,255,0,.1);--acc-dim2:rgba(200,255,0,.05);
-  --prot:#ff6b6b;--carb:#4ecdc4;--fat:#ffb347;--sat:#a78bfa;
+  --acc:#c8ff00;--acc-dim:rgba(200,255,0,.1);
+  --prot:#ff6b6b;--carb:#4ecdc4;--fat:#ffb347;
   --text:#eeeef5;--muted:#606078;--muted2:#8888a8;
-  --danger:#ff4757;--nav-h:64px;
-  --sb:env(safe-area-inset-bottom,0px);--st:env(safe-area-inset-top,0px);
+  --danger:#ff4757;--green:#2ecc71;
+  --nav-h:64px;--sb:env(safe-area-inset-bottom,0px);--st:env(safe-area-inset-top,0px);
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;overflow:hidden;}
 #app{height:100dvh;display:flex;flex-direction:column;}
 .screens{flex:1;overflow:hidden;position:relative;}
-.screen{
-  position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;
-  padding-bottom:calc(var(--nav-h) + var(--sb) + 16px);
-  opacity:0;pointer-events:none;transform:translateY(8px);
-  transition:opacity .22s ease,transform .22s ease;
-}
+.screen{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;padding-bottom:calc(var(--nav-h) + var(--sb) + 16px);opacity:0;pointer-events:none;transform:translateY(8px);transition:opacity .22s ease,transform .22s ease;}
 .screen.active{opacity:1;pointer-events:all;transform:none;}
 .screen::-webkit-scrollbar{display:none;}
 .screen{scrollbar-width:none;}
-nav{
-  height:calc(var(--nav-h) + var(--sb));padding-bottom:var(--sb);
-  background:rgba(11,11,16,.96);backdrop-filter:blur(24px);
-  border-top:1px solid var(--border);display:flex;z-index:100;flex-shrink:0;
-}
-.nb{
-  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:4px;background:none;border:none;color:var(--muted);cursor:pointer;
-  font-family:inherit;transition:color .18s;padding-top:4px;
-}
+nav{height:calc(var(--nav-h) + var(--sb));padding-bottom:var(--sb);background:rgba(11,11,16,.96);backdrop-filter:blur(24px);border-top:1px solid var(--border);display:flex;z-index:100;flex-shrink:0;}
+.nb{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;background:none;border:none;color:var(--muted);cursor:pointer;font-family:inherit;transition:color .18s;padding-top:4px;}
 .nb.active{color:var(--acc);}
 .nb svg{width:21px;height:21px;stroke-width:1.8;}
 .nb span{font-size:10px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;}
-.ph{
-  padding:calc(var(--st) + 16px) 18px 12px;
-  display:flex;align-items:center;justify-content:space-between;
-  position:sticky;top:0;z-index:20;
-  background:linear-gradient(to bottom,var(--bg) 75%,transparent);
-}
+.ph{padding:calc(var(--st) + 16px) 18px 12px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20;background:linear-gradient(to bottom,var(--bg) 75%,transparent);}
 .ptitle{font-size:24px;font-weight:900;letter-spacing:-.5px;}
 .ptitle em{font-style:normal;color:var(--acc);}
 .card{background:var(--s1);border:1px solid var(--border);border-radius:18px;padding:18px;margin:0 14px 10px;}
 .slabel{font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1.8px;padding:6px 14px 8px;}
+
+/* ONBOARDING */
+#sc-onboard{background:var(--bg);z-index:200;padding-bottom:0;}
+.onboard-wrap{min-height:100%;display:flex;flex-direction:column;padding:calc(var(--st) + 30px) 24px 40px;}
+.onboard-logo{font-size:32px;font-weight:900;letter-spacing:-.5px;margin-bottom:6px;}
+.onboard-logo em{font-style:normal;color:var(--acc);}
+.onboard-sub{font-size:14px;color:var(--muted2);margin-bottom:32px;line-height:1.5;}
+.step{display:none;flex-direction:column;gap:0;flex:1;}
+.step.active{display:flex;}
+.step-title{font-size:20px;font-weight:800;margin-bottom:6px;}
+.step-desc{font-size:13px;color:var(--muted2);margin-bottom:24px;line-height:1.5;}
+.ob-field{margin-bottom:16px;}
+.ob-field label{font-size:10px;font-weight:800;color:var(--muted2);text-transform:uppercase;letter-spacing:1.5px;display:block;margin-bottom:7px;}
+.ob-input{width:100%;background:var(--s1);border:1.5px solid var(--border);border-radius:14px;padding:14px 16px;color:var(--text);font-family:inherit;font-size:18px;font-weight:700;transition:border-color .2s;}
+.ob-input:focus{outline:none;border-color:var(--acc);}
+.ob-options{display:flex;flex-direction:column;gap:8px;}
+.ob-opt{background:var(--s1);border:1.5px solid var(--border);border-radius:14px;padding:14px 16px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:all .15s;}
+.ob-opt:active,.ob-opt.on{background:var(--acc-dim);border-color:rgba(200,255,0,.35);}
+.ob-opt .oo-icon{font-size:22px;flex-shrink:0;}
+.ob-opt .oo-text{flex:1;}
+.ob-opt .oo-title{font-size:14px;font-weight:700;}
+.ob-opt .oo-desc{font-size:11px;color:var(--muted2);margin-top:2px;}
+.ob-next{width:100%;padding:15px;background:var(--acc);color:#0b0b10;font-family:inherit;font-size:15px;font-weight:900;border:none;border-radius:14px;cursor:pointer;letter-spacing:.5px;margin-top:auto;padding-top:16px;transition:transform .1s;}
+.ob-next:active{transform:scale(.97);}
+.ob-skip{background:none;border:none;color:var(--muted);font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;padding:12px;width:100%;text-align:center;}
+.step-dots{display:flex;gap:6px;justify-content:center;margin-bottom:24px;}
+.dot{width:6px;height:6px;border-radius:99px;background:var(--s3);transition:all .3s;}
+.dot.on{width:18px;background:var(--acc);}
+.ob-row{display:flex;gap:10px;}
+.ob-row .ob-field{flex:1;}
+.sex-row{display:flex;gap:8px;}
+.sex-btn{flex:1;padding:14px;background:var(--s1);border:1.5px solid var(--border);border-radius:14px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:700;color:var(--muted2);transition:all .15s;text-align:center;}
+.sex-btn.on{background:var(--acc-dim);border-color:rgba(200,255,0,.3);color:var(--acc);}
+.result-preview{background:var(--s1);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:16px;}
+.result-preview h4{font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;}
+.rp-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.rp-item{text-align:center;}
+.rp-val{font-size:22px;font-weight:900;color:var(--acc);}
+.rp-lbl{font-size:9px;color:var(--muted2);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-top:2px;}
 
 /* HOY */
 .hero{background:linear-gradient(145deg,var(--s1),var(--s2));border:1px solid var(--border);border-radius:22px;margin:4px 14px 10px;padding:20px 18px 18px;}
@@ -68,7 +89,7 @@ nav{
 .rnum{font-size:26px;font-weight:900;color:var(--acc);line-height:1;}
 .runit{font-size:9px;color:var(--muted2);font-weight:600;letter-spacing:1px;text-transform:uppercase;}
 .rmeta{flex:1;}
-.rmeta .rtitle{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:11px;}
+.rtitle{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:11px;}
 .mbar{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
 .mbl{font-size:10px;font-weight:800;width:9px;text-transform:uppercase;}
 .mbt{flex:1;height:5px;background:var(--s3);border-radius:99px;overflow:hidden;}
@@ -94,43 +115,9 @@ nav{
 .fi-kcal small{font-size:9px;color:var(--muted);font-weight:400;}
 .dbtn{background:none;border:none;color:var(--muted);cursor:pointer;padding:5px;border-radius:8px;transition:color .15s,background .15s;display:flex;align-items:center;}
 .dbtn:active{color:var(--danger);background:rgba(255,71,87,.1);}
-/* botón agregar en pantalla hoy */
-.add-food-btn{
-  margin:0 14px 10px;padding:16px;
-  background:var(--acc);color:#0b0b10;
-  font-family:inherit;font-size:15px;font-weight:900;
-  border:none;border-radius:16px;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;gap:10px;
-  letter-spacing:.5px;transition:transform .1s,opacity .1s;
-  width:calc(100% - 28px);
-}
+.add-food-btn{margin:0 14px 10px;padding:16px;background:var(--acc);color:#0b0b10;font-family:inherit;font-size:15px;font-weight:900;border:none;border-radius:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;letter-spacing:.5px;transition:transform .1s,opacity .1s;width:calc(100% - 28px);}
 .add-food-btn:active{transform:scale(.98);opacity:.9;}
 .add-food-btn svg{width:20px;height:20px;stroke-width:2.5;flex-shrink:0;}
-
-/* barra quemadas flotante sobre el nav */
-.burned-bar{
-  background:rgba(11,11,16,.96);backdrop-filter:blur(24px);
-  border-top:1px solid var(--border);
-  padding:8px 14px calc(8px);
-  display:flex;align-items:center;gap:10px;
-  flex-shrink:0;z-index:99;
-}
-.burned-bar label{font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1.2px;white-space:nowrap;}
-.binput{
-  flex:1;background:var(--s2);border:1px solid var(--border);
-  border-radius:10px;padding:7px 10px;color:var(--text);
-  font-family:inherit;font-size:16px;font-weight:800;
-  transition:border-color .2s;min-width:0;
-}
-.binput:focus{outline:none;border-color:var(--prot);}
-.bunit{font-size:11px;color:var(--muted2);white-space:nowrap;}
-.sbtn{
-  background:rgba(255,107,107,.12);border:1px solid rgba(255,107,107,.2);
-  border-radius:10px;padding:7px 13px;color:var(--prot);
-  font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;
-  transition:background .15s;letter-spacing:.3px;white-space:nowrap;
-}
-.sbtn:active{background:rgba(255,107,107,.25);}
 .empty{text-align:center;padding:36px 20px;color:var(--muted);}
 .empty svg{opacity:.25;margin-bottom:10px;}
 .empty p{font-size:13px;font-weight:500;}
@@ -144,8 +131,9 @@ nav{
 .sico{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none;}
 .xbtn{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:var(--s3);border:none;border-radius:99px;width:22px;height:22px;color:var(--muted2);cursor:pointer;font-size:14px;display:none;align-items:center;justify-content:center;}
 .xbtn.show{display:flex;}
-.stabs{display:flex;gap:6px;padding:8px 14px 4px;position:sticky;top:calc(var(--st) + 116px);z-index:15;background:linear-gradient(to bottom,var(--bg) 80%,transparent);}
-.stab{padding:6px 14px;border-radius:99px;font-size:11px;font-weight:800;border:1.5px solid var(--border);background:none;color:var(--muted2);cursor:pointer;font-family:inherit;transition:all .15s;letter-spacing:.3px;}
+.stabs{display:flex;gap:6px;padding:8px 14px 4px;position:sticky;top:calc(var(--st) + 116px);z-index:15;background:linear-gradient(to bottom,var(--bg) 80%,transparent);overflow-x:auto;}
+.stabs::-webkit-scrollbar{display:none;}
+.stab{padding:6px 14px;border-radius:99px;font-size:11px;font-weight:800;border:1.5px solid var(--border);background:none;color:var(--muted2);cursor:pointer;font-family:inherit;transition:all .15s;letter-spacing:.3px;white-space:nowrap;flex-shrink:0;}
 .stab.on{background:var(--acc-dim);border-color:rgba(200,255,0,.3);color:var(--acc);}
 .rlist{padding:4px 14px 0;}
 .ri{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:11px 13px;margin-bottom:6px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:border-color .15s,background .15s;animation:sdown .15s ease;}
@@ -180,11 +168,44 @@ nav{
 .abtn:active{transform:scale(.97);opacity:.9;}
 .fbtn{background:var(--s2);border:1.5px solid var(--border);border-radius:12px;padding:14px;color:var(--muted2);cursor:pointer;font-size:18px;transition:all .15s;line-height:1;}
 .fbtn.on{border-color:#ffb347;color:#ffb347;}
-.wspin{display:flex;align-items:center;justify-content:center;gap:10px;padding:30px;color:var(--muted2);font-size:13px;font-weight:600;}
+
+/* MANUAL */
+.manual-panel{margin:10px 14px 0;background:var(--s1);border:1.5px solid rgba(200,255,0,.2);border-radius:18px;padding:18px;display:none;}
+.manual-panel.show{display:block;animation:sdown .2s ease;}
+.manual-panel h3{font-size:13px;font-weight:800;color:var(--muted2);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;}
+.manual-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+.mfield{display:flex;flex-direction:column;gap:5px;}
+.mfield label{font-size:9px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1.2px;}
+.mfield input{background:var(--s2);border:1.5px solid var(--border);border-radius:10px;padding:10px 12px;color:var(--text);font-family:inherit;font-size:17px;font-weight:800;transition:border-color .2s;width:100%;}
+.mfield input:focus{outline:none;border-color:var(--acc);}
+.mfield.full{grid-column:1/-1;}
+.mname-input{background:var(--s2);border:1.5px solid var(--border);border-radius:10px;padding:10px 12px;color:var(--text);font-family:inherit;font-size:15px;font-weight:600;width:100%;margin-bottom:14px;transition:border-color .2s;}
+.mname-input:focus{outline:none;border-color:var(--acc);}
+.mname-input::placeholder{color:var(--muted);}
+
+/* FOTO IA */
+.photo-panel{margin:10px 14px 0;background:var(--s1);border:1.5px solid rgba(167,139,250,.25);border-radius:18px;padding:18px;display:none;}
+.photo-panel.show{display:block;animation:sdown .2s ease;}
+.photo-panel h3{font-size:13px;font-weight:800;color:#a78bfa;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
+.photo-panel p{font-size:12px;color:var(--muted2);margin-bottom:14px;line-height:1.5;}
+.photo-area{border:2px dashed var(--border);border-radius:14px;padding:28px;text-align:center;cursor:pointer;transition:border-color .2s;margin-bottom:14px;position:relative;}
+.photo-area:active{border-color:#a78bfa;}
+.photo-area input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.photo-area svg{opacity:.3;margin-bottom:10px;}
+.photo-area p{font-size:13px;color:var(--muted2);font-weight:600;margin:0;}
+.photo-preview{width:100%;border-radius:12px;margin-bottom:14px;display:none;max-height:200px;object-fit:cover;}
+.photo-preview.show{display:block;}
+.analyze-btn{width:100%;padding:13px;background:rgba(167,139,250,.15);border:1.5px solid rgba(167,139,250,.3);border-radius:12px;color:#a78bfa;font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;transition:background .15s;letter-spacing:.3px;}
+.analyze-btn:active{background:rgba(167,139,250,.25);}
+.analyze-btn:disabled{opacity:.4;cursor:not-allowed;}
+.photo-result{background:var(--s2);border-radius:12px;padding:14px;margin-bottom:14px;display:none;}
+.photo-result.show{display:block;animation:sdown .2s ease;}
+.wspin{display:flex;align-items:center;justify-content:center;gap:10px;padding:24px;color:var(--muted2);font-size:13px;font-weight:600;}
 .spin{width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--acc);border-radius:50%;animation:spin .7s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
+.api-key-notice{background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.2);border-radius:12px;padding:12px 14px;font-size:12px;color:#a78bfa;line-height:1.5;margin-bottom:14px;}
 
-/* HIST */
+/* HISTORIAL */
 .cchart{margin:4px 14px 10px;background:var(--s1);border:1px solid var(--border);border-radius:20px;padding:18px 14px 14px;overflow:hidden;}
 .chdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
 .ctitle{font-size:12px;font-weight:800;color:var(--muted2);text-transform:uppercase;letter-spacing:1px;}
@@ -207,70 +228,8 @@ nav{
 .hm{font-size:10px;color:var(--muted);margin-top:2px;display:flex;gap:6px;}
 .hk{font-size:19px;font-weight:900;}
 .hk small{font-size:9px;color:var(--muted);font-weight:400;}
-
-/* CFG */
-.cfgbody{padding:0 14px;}
-.field{margin-bottom:14px;}
-.field label{font-size:10px;font-weight:800;color:var(--muted2);text-transform:uppercase;letter-spacing:1.5px;display:block;margin-bottom:6px;}
-.finput{width:100%;background:var(--s1);border:1.5px solid var(--border);border-radius:12px;padding:13px 15px;color:var(--text);font-family:inherit;font-size:16px;font-weight:700;transition:border-color .2s;}
-.finput:focus{outline:none;border-color:var(--acc);}
-.savecfg{width:100%;padding:14px;background:var(--acc);color:#0b0b10;font-family:inherit;font-size:14px;font-weight:900;border:none;border-radius:12px;cursor:pointer;letter-spacing:.5px;margin-top:6px;transition:transform .1s;}
-.savecfg:active{transform:scale(.97);}
-.icard{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:14px;}
-.icard h3{font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;}
-.ir{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
-.ir span{font-size:12px;color:var(--muted2);}
-.ir strong{font-size:14px;font-weight:800;}
-.pwacard{background:var(--acc-dim);border:1px solid rgba(200,255,0,.2);border-radius:16px;padding:16px;margin-bottom:14px;}
-.pwacard h3{font-size:14px;font-weight:800;color:var(--acc);margin-bottom:6px;}
-.pwacard p{font-size:12px;color:var(--muted2);line-height:1.5;margin-bottom:12px;}
-.instbtn{background:var(--acc);color:#0b0b10;border:none;border-radius:10px;padding:10px 16px;font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;}
-
-/* TOAST */
-#toast{position:fixed;bottom:calc(var(--nav-h) + var(--sb) + 14px);left:50%;transform:translateX(-50%) translateY(14px);background:var(--s2);border:1px solid var(--border);color:var(--text);padding:9px 18px;border-radius:99px;font-size:12px;font-weight:700;letter-spacing:.3px;opacity:0;transition:all .25s;pointer-events:none;white-space:nowrap;z-index:500;}
-#toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-#toast.ok{border-color:rgba(200,255,0,.4);color:var(--acc);}
-
-
-
-
-/* entrada manual */
-.manual-panel{margin:10px 14px 0;background:var(--s1);border:1.5px solid rgba(200,255,0,.2);border-radius:18px;padding:18px;display:none;}
-.manual-panel.show{display:block;animation:sdown .2s ease;}
-.manual-panel h3{font-size:13px;font-weight:800;color:var(--muted2);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;}
-.manual-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
-.mfield{display:flex;flex-direction:column;gap:5px;}
-.mfield label{font-size:9px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1.2px;}
-.mfield input{background:var(--s2);border:1.5px solid var(--border);border-radius:10px;padding:10px 12px;color:var(--text);font-family:inherit;font-size:17px;font-weight:800;transition:border-color .2s;width:100%;}
-.mfield input:focus{outline:none;border-color:var(--acc);}
-.mfield.full{grid-column:1/-1;}
-.mname-input{background:var(--s2);border:1.5px solid var(--border);border-radius:10px;padding:10px 12px;color:var(--text);font-family:inherit;font-size:15px;font-weight:600;width:100%;margin-bottom:14px;transition:border-color .2s;}
-.mname-input:focus{outline:none;border-color:var(--acc);}
-.mname-input::placeholder{color:var(--muted);}
-
-/* quemadas en historial */
-.burned-section{margin:0 14px 10px;background:var(--s1);border:1px solid var(--border);border-radius:18px;padding:18px;}
-.burned-section h3{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
-.date-select-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
-.dsbtn{padding:7px 13px;border-radius:99px;font-size:12px;font-weight:700;border:1.5px solid var(--border);background:none;color:var(--muted2);cursor:pointer;font-family:inherit;transition:all .15s;letter-spacing:.2px;}
-.dsbtn.on{background:rgba(255,107,107,.12);border-color:rgba(255,107,107,.3);color:var(--prot);}
-.date-picker-wrap{margin-bottom:12px;display:none;}
-.date-picker-wrap.show{display:block;}
-.date-picker{width:100%;background:var(--s2);border:1.5px solid var(--border);border-radius:12px;padding:11px 14px;color:var(--text);font-family:inherit;font-size:15px;font-weight:600;transition:border-color .2s;}
-.date-picker:focus{outline:none;border-color:var(--prot);}
-.burned-input-row{display:flex;gap:8px;align-items:center;}
-.burned-qty{flex:1;background:var(--s2);border:1.5px solid var(--border);border-radius:12px;padding:12px 14px;color:var(--text);font-family:inherit;font-size:22px;font-weight:800;transition:border-color .2s;}
-.burned-qty:focus{outline:none;border-color:var(--prot);}
-.burned-unit-lbl{font-size:12px;color:var(--muted2);font-weight:600;white-space:nowrap;}
-.save-burned-btn{background:rgba(255,107,107,.15);border:1.5px solid rgba(255,107,107,.25);border-radius:12px;padding:12px 18px;color:var(--prot);font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;transition:background .15s;white-space:nowrap;letter-spacing:.3px;}
-.save-burned-btn:active{background:rgba(255,107,107,.3);}
-
-/* stats déficit/superávit */
-.deficit-card{
-  margin:0 14px 10px;border-radius:18px;padding:16px 18px;
-  display:flex;align-items:center;gap:14px;
-  border:1px solid var(--border);
-}
+/* deficit */
+.deficit-card{margin:0 14px 10px;border-radius:18px;padding:16px 18px;display:flex;align-items:center;gap:14px;border:1px solid var(--border);}
 .deficit-card.green{background:rgba(46,204,113,.08);border-color:rgba(46,204,113,.2);}
 .deficit-card.red{background:rgba(255,107,107,.08);border-color:rgba(255,107,107,.2);}
 .deficit-card.neutral{background:var(--s1);}
@@ -290,14 +249,152 @@ nav{
 .bg-card.acc .bv{color:var(--acc);}
 .bg-card.fire{background:rgba(255,107,107,.08);border-color:rgba(255,107,107,.2);}
 .bg-card.fire .bv{color:var(--prot);}
+/* quemadas */
+.burned-section{margin:0 14px 10px;background:var(--s1);border:1px solid var(--border);border-radius:18px;padding:18px;}
+.burned-section h3{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.date-select-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
+.dsbtn{padding:7px 13px;border-radius:99px;font-size:12px;font-weight:700;border:1.5px solid var(--border);background:none;color:var(--muted2);cursor:pointer;font-family:inherit;transition:all .15s;letter-spacing:.2px;}
+.dsbtn.on{background:rgba(255,107,107,.12);border-color:rgba(255,107,107,.3);color:var(--prot);}
+.date-picker-wrap{margin-bottom:12px;display:none;}
+.date-picker-wrap.show{display:block;}
+.date-picker{width:100%;background:var(--s2);border:1.5px solid var(--border);border-radius:12px;padding:11px 14px;color:var(--text);font-family:inherit;font-size:15px;font-weight:600;transition:border-color .2s;color-scheme:dark;}
+.date-picker:focus{outline:none;border-color:var(--prot);}
+.burned-input-row{display:flex;gap:8px;align-items:center;}
+.burned-qty{flex:1;background:var(--s2);border:1.5px solid var(--border);border-radius:12px;padding:12px 14px;color:var(--text);font-family:inherit;font-size:22px;font-weight:800;transition:border-color .2s;}
+.burned-qty:focus{outline:none;border-color:var(--prot);}
+.burned-unit-lbl{font-size:12px;color:var(--muted2);font-weight:600;white-space:nowrap;}
+.save-burned-btn{background:rgba(255,107,107,.15);border:1.5px solid rgba(255,107,107,.25);border-radius:12px;padding:12px 18px;color:var(--prot);font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;transition:background .15s;white-space:nowrap;letter-spacing:.3px;}
+.save-burned-btn:active{background:rgba(255,107,107,.3);}
+
+/* CFG */
+.cfgbody{padding:0 14px;}
+.field{margin-bottom:14px;}
+.field label{font-size:10px;font-weight:800;color:var(--muted2);text-transform:uppercase;letter-spacing:1.5px;display:block;margin-bottom:6px;}
+.finput{width:100%;background:var(--s1);border:1.5px solid var(--border);border-radius:12px;padding:13px 15px;color:var(--text);font-family:inherit;font-size:16px;font-weight:700;transition:border-color .2s;}
+.finput:focus{outline:none;border-color:var(--acc);}
+.savecfg{width:100%;padding:14px;background:var(--acc);color:#0b0b10;font-family:inherit;font-size:14px;font-weight:900;border:none;border-radius:12px;cursor:pointer;letter-spacing:.5px;margin-top:6px;transition:transform .1s;}
+.savecfg:active{transform:scale(.97);}
+.icard{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:14px;}
+.icard h3{font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;}
+.ir{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.ir span{font-size:12px;color:var(--muted2);}
+.ir strong{font-size:14px;font-weight:800;}
+.recalc-btn{width:100%;padding:12px;background:rgba(200,255,0,.08);border:1.5px solid rgba(200,255,0,.2);border-radius:12px;color:var(--acc);font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;margin-top:10px;letter-spacing:.3px;transition:background .15s;}
+.recalc-btn:active{background:rgba(200,255,0,.18);}
+.pwacard{background:var(--acc-dim);border:1px solid rgba(200,255,0,.2);border-radius:16px;padding:16px;margin-bottom:14px;}
+.pwacard h3{font-size:14px;font-weight:800;color:var(--acc);margin-bottom:6px;}
+.pwacard p{font-size:12px;color:var(--muted2);line-height:1.5;margin-bottom:12px;}
+.instbtn{background:var(--acc);color:#0b0b10;border:none;border-radius:10px;padding:10px 16px;font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;}
+.apikey-field input{font-size:13px;font-weight:500;font-family:monospace;letter-spacing:.5px;}
+
+/* TOAST */
+#toast{position:fixed;bottom:calc(var(--nav-h) + var(--sb) + 14px);left:50%;transform:translateX(-50%) translateY(14px);background:var(--s2);border:1px solid var(--border);color:var(--text);padding:9px 18px;border-radius:99px;font-size:12px;font-weight:700;letter-spacing:.3px;opacity:0;transition:all .25s;pointer-events:none;white-space:nowrap;z-index:500;}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+#toast.ok{border-color:rgba(200,255,0,.4);color:var(--acc);}
 </style>
 </head>
 <body>
 <div id="app">
   <div class="screens">
 
+    <!-- ONBOARDING -->
+    <section class="screen" id="sc-onboard" style="padding-bottom:0;">
+      <div class="onboard-wrap">
+        <div class="onboard-logo">Nutri<em>Track</em></div>
+        <div class="onboard-sub">Tu contador de calorías y macros personal. Configuremos la app en 3 pasos.</div>
+        <div class="step-dots">
+          <div class="dot on" id="dot0"></div>
+          <div class="dot" id="dot1"></div>
+          <div class="dot" id="dot2"></div>
+        </div>
+
+        <!-- PASO 0: datos personales -->
+        <div class="step active" id="step0">
+          <div class="step-title">Tus datos</div>
+          <div class="step-desc">Para calcular tus metas calóricas y de macros.</div>
+          <div class="ob-field">
+            <label>Sexo</label>
+            <div class="sex-row">
+              <button class="sex-btn on" id="sex-m" onclick="setSex('m')">♂ Masculino</button>
+              <button class="sex-btn" id="sex-f" onclick="setSex('f')">♀ Femenino</button>
+            </div>
+          </div>
+          <div class="ob-row">
+            <div class="ob-field">
+              <label>Edad</label>
+              <input class="ob-input" id="ob-age" type="number" inputmode="numeric" placeholder="25">
+            </div>
+            <div class="ob-field">
+              <label>Peso (kg)</label>
+              <input class="ob-input" id="ob-weight" type="number" inputmode="decimal" placeholder="75">
+            </div>
+          </div>
+          <div class="ob-field">
+            <label>Altura (cm)</label>
+            <input class="ob-input" id="ob-height" type="number" inputmode="numeric" placeholder="175">
+          </div>
+          <button class="ob-next" onclick="obNext(1)">Siguiente →</button>
+        </div>
+
+        <!-- PASO 1: nivel de actividad -->
+        <div class="step" id="step1">
+          <div class="step-title">Nivel de actividad</div>
+          <div class="step-desc">¿Cuánto ejercicio hacés por semana?</div>
+          <div class="ob-options">
+            <div class="ob-opt on" id="act-sed" onclick="setActivity('sed',this)">
+              <div class="oo-icon">🪑</div>
+              <div class="oo-text"><div class="oo-title">Sedentario</div><div class="oo-desc">Trabajo de escritorio, poco o nada de ejercicio</div></div>
+            </div>
+            <div class="ob-opt" id="act-light" onclick="setActivity('light',this)">
+              <div class="oo-icon">🚶</div>
+              <div class="oo-text"><div class="oo-title">Ligero</div><div class="oo-desc">Ejercicio 1-3 días por semana</div></div>
+            </div>
+            <div class="ob-opt" id="act-mod" onclick="setActivity('mod',this)">
+              <div class="oo-icon">🏃</div>
+              <div class="oo-text"><div class="oo-title">Moderado</div><div class="oo-desc">Ejercicio 3-5 días por semana</div></div>
+            </div>
+            <div class="ob-opt" id="act-high" onclick="setActivity('high',this)">
+              <div class="oo-icon">💪</div>
+              <div class="oo-text"><div class="oo-title">Intenso</div><div class="oo-desc">Ejercicio 6-7 días por semana</div></div>
+            </div>
+          </div>
+          <button class="ob-next" onclick="obNext(2)" style="margin-top:16px;">Siguiente →</button>
+        </div>
+
+        <!-- PASO 2: objetivo -->
+        <div class="step" id="step2">
+          <div class="step-title">Tu objetivo</div>
+          <div class="step-desc">Calculamos tus metas automáticamente según esto.</div>
+          <div class="ob-options" style="margin-bottom:14px;">
+            <div class="ob-opt on" id="goal-cut" onclick="setGoal('cut',this)">
+              <div class="oo-icon">📉</div>
+              <div class="oo-text"><div class="oo-title">Bajar de peso</div><div class="oo-desc">Déficit calórico moderado</div></div>
+            </div>
+            <div class="ob-opt" id="goal-maint" onclick="setGoal('maint',this)">
+              <div class="oo-icon">⚖️</div>
+              <div class="oo-text"><div class="oo-title">Mantener peso</div><div class="oo-desc">Calorías de mantenimiento</div></div>
+            </div>
+            <div class="ob-opt" id="goal-bulk" onclick="setGoal('bulk',this)">
+              <div class="oo-icon">💪</div>
+              <div class="oo-text"><div class="oo-title">Ganar masa muscular</div><div class="oo-desc">Superávit calórico moderado</div></div>
+            </div>
+          </div>
+          <div class="result-preview" id="ob-preview">
+            <h4>Tus metas estimadas</h4>
+            <div class="rp-grid">
+              <div class="rp-item"><div class="rp-val" id="rp-kcal">—</div><div class="rp-lbl">kcal/día</div></div>
+              <div class="rp-item"><div class="rp-val" id="rp-prot" style="color:var(--prot)">—</div><div class="rp-lbl">g proteína</div></div>
+              <div class="rp-item"><div class="rp-val" id="rp-carb" style="color:var(--carb)">—</div><div class="rp-lbl">g carbohidratos</div></div>
+              <div class="rp-item"><div class="rp-val" id="rp-fat" style="color:var(--fat)">—</div><div class="rp-lbl">g grasas</div></div>
+            </div>
+          </div>
+          <button class="ob-next" onclick="finishOnboard()">¡Empezar! 🚀</button>
+        </div>
+      </div>
+    </section>
+
     <!-- HOY -->
-    <section class="screen active" id="sc-hoy">
+    <section class="screen" id="sc-hoy">
       <div class="ph">
         <div class="ptitle">Nutri<em>Track</em></div>
         <div class="dnav">
@@ -343,18 +440,19 @@ nav{
     <!-- AGREGAR -->
     <section class="screen" id="sc-add">
       <div class="ph"><div class="ptitle">Agregar</div></div>
-      <div class="sbar">
+      <div class="sbar" id="sbar">
         <div class="swrap">
           <svg class="sico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           <input class="sinput" id="search-inp" type="text" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="Buscar alimento...">
           <button class="xbtn" id="xbtn">×</button>
         </div>
       </div>
-      <div class="stabs">
+      <div class="stabs" id="stabs">
         <button class="stab on" id="tab-local" onclick="switchTab('local')">Mis alimentos</button>
         <button class="stab" id="tab-favs" onclick="switchTab('favs')">⭐ Favoritos</button>
         <button class="stab" id="tab-web" onclick="switchTab('web')">🌐 Web</button>
         <button class="stab" id="tab-manual" onclick="switchTab('manual')">✏️ Manual</button>
+        <button class="stab" id="tab-foto" onclick="switchTab('foto')">📷 Foto IA</button>
       </div>
       <div class="rlist" id="rlist"></div>
       <div class="fpanel" id="fpanel">
@@ -378,41 +476,41 @@ nav{
           <button class="fbtn" id="fav-btn">⭐</button>
         </div>
       </div>
-
-      <!-- ENTRADA MANUAL -->
+      <!-- MANUAL -->
       <div class="manual-panel" id="manual-panel">
         <h3>✏️ Entrada manual</h3>
-        <input class="mname-input" id="m-name" type="text" placeholder="Nombre (ej: Pizza casera, Snack, etc.)">
+        <input class="mname-input" id="m-name" type="text" placeholder="Nombre (ej: Pizza, Snack, etc.)">
         <div class="manual-grid">
-          <div class="mfield full">
-            <label>⚡ Calorías (obligatorio)</label>
-            <input id="m-kcal" type="number" inputmode="numeric" placeholder="0">
-          </div>
-          <div class="mfield">
-            <label style="color:var(--prot)">Proteína (g)</label>
-            <input id="m-prot" type="number" inputmode="decimal" placeholder="0">
-          </div>
-          <div class="mfield">
-            <label style="color:var(--carb)">Carbohidratos (g)</label>
-            <input id="m-carb" type="number" inputmode="decimal" placeholder="0">
-          </div>
-          <div class="mfield">
-            <label style="color:var(--fat)">Grasas (g)</label>
-            <input id="m-fat" type="number" inputmode="decimal" placeholder="0">
-          </div>
-          <div class="mfield">
-            <label>Cantidad</label>
-            <input id="m-amount" type="number" inputmode="decimal" placeholder="1">
-          </div>
+          <div class="mfield full"><label>⚡ Calorías (obligatorio)</label><input id="m-kcal" type="number" inputmode="numeric" placeholder="0"></div>
+          <div class="mfield"><label style="color:var(--prot)">Proteína (g)</label><input id="m-prot" type="number" inputmode="decimal" placeholder="0"></div>
+          <div class="mfield"><label style="color:var(--carb)">Carbs (g)</label><input id="m-carb" type="number" inputmode="decimal" placeholder="0"></div>
+          <div class="mfield"><label style="color:var(--fat)">Grasas (g)</label><input id="m-fat" type="number" inputmode="decimal" placeholder="0"></div>
+          <div class="mfield"><label>Cantidad</label><input id="m-amount" type="number" inputmode="decimal" placeholder="1"></div>
         </div>
         <button class="abtn" id="confirm-manual">+ Agregar</button>
+      </div>
+      <!-- FOTO IA -->
+      <div class="photo-panel" id="photo-panel">
+        <h3>📷 Identificar con IA</h3>
+        <p>Sacá una foto o elegí una imagen de la galería. La IA identifica el alimento y estima sus macros.</p>
+        <div id="no-apikey-notice" class="api-key-notice" style="display:none;">
+          ⚠️ Necesitás una <b>API Key de Anthropic</b> para usar esta función. Obtené una gratis en <b>console.anthropic.com</b> y pegala en Ajustes → API Key.
+        </div>
+        <div class="photo-area" id="photo-area">
+          <input type="file" accept="image/*" capture="environment" id="photo-input">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          <p>Tocá para tomar foto o elegir de galería</p>
+        </div>
+        <img class="photo-preview" id="photo-preview" src="" alt="">
+        <div class="photo-result" id="photo-result"></div>
+        <button class="analyze-btn" id="analyze-btn" disabled>🔍 Analizar con IA</button>
       </div>
     </section>
 
     <!-- HISTORIAL -->
     <section class="screen" id="sc-hist">
       <div class="ph"><div class="ptitle">Historial</div></div>
-      <!-- QUEMADAS CON SELECTOR DE FECHA -->
+      <!-- QUEMADAS -->
       <div class="burned-section">
         <h3>🔥 Registrar calorías quemadas</h3>
         <div class="date-select-row">
@@ -430,36 +528,22 @@ nav{
           <button class="save-burned-btn" id="save-burned">Guardar 🔥</button>
         </div>
       </div>
-
-      <!-- STATS DÉFICIT HOY -->
-      <div id="deficit-section">
-        <div class="deficit-card neutral" id="deficit-card">
-          <div class="dc-icon" id="deficit-icon">⚖️</div>
-          <div class="dc-info">
-            <div class="dc-label">BALANCE CALÓRICO HOY</div>
-            <div class="dc-val neutral" id="deficit-val">—</div>
-            <div class="dc-sub" id="deficit-sub">Registrá comidas para ver el balance</div>
-          </div>
-        </div>
-        <div class="balance-grid">
-          <div class="bg-card acc">
-            <div class="bv" id="bg-ingeridas">—</div>
-            <div class="bl">Ingeridas</div>
-          </div>
-          <div class="bg-card fire">
-            <div class="bv" id="bg-quemadas">—</div>
-            <div class="bl">Quemadas</div>
-          </div>
-          <div class="bg-card">
-            <div class="bv" id="bg-meta">—</div>
-            <div class="bl">Meta kcal</div>
-          </div>
-          <div class="bg-card">
-            <div class="bv" id="bg-netas">—</div>
-            <div class="bl">Netas</div>
-          </div>
+      <!-- DÉFICIT HOY -->
+      <div class="deficit-card neutral" id="deficit-card">
+        <div class="dc-icon" id="deficit-icon">⚖️</div>
+        <div class="dc-info">
+          <div class="dc-label">BALANCE CALÓRICO HOY</div>
+          <div class="dc-val neutral" id="deficit-val">—</div>
+          <div class="dc-sub" id="deficit-sub">Registrá comidas para ver el balance</div>
         </div>
       </div>
+      <div class="balance-grid">
+        <div class="bg-card acc"><div class="bv" id="bg-ingeridas">—</div><div class="bl">Ingeridas</div></div>
+        <div class="bg-card fire"><div class="bv" id="bg-quemadas">—</div><div class="bl">Quemadas</div></div>
+        <div class="bg-card"><div class="bv" id="bg-meta">—</div><div class="bl">Meta kcal</div></div>
+        <div class="bg-card"><div class="bv" id="bg-netas">—</div><div class="bl">Netas</div></div>
+      </div>
+      <!-- GRÁFICO -->
       <div class="cchart">
         <div class="chdr">
           <div class="ctitle">CALORÍAS POR DÍA</div>
@@ -471,15 +555,9 @@ nav{
         <div class="bchart" id="bchart"></div>
       </div>
       <div style="display:flex;gap:8px;padding:0 14px 10px;">
-        <div class="sbox" style="background:var(--s1);border:1px solid var(--border);border-radius:14px;flex:1;">
-          <div class="sv" id="avg-k" style="font-size:20px;">—</div><div class="sl">Prom. kcal</div>
-        </div>
-        <div class="sbox" style="background:var(--s1);border:1px solid var(--border);border-radius:14px;flex:1;">
-          <div class="sv" id="avg-p" style="font-size:20px;">—</div><div class="sl">Prom. prot</div>
-        </div>
-        <div class="sbox acc" style="border-radius:14px;flex:1;">
-          <div class="sv" id="tot-d" style="font-size:20px;">0</div><div class="sl">Días reg.</div>
-        </div>
+        <div class="sbox" style="background:var(--s1);border:1px solid var(--border);border-radius:14px;flex:1;"><div class="sv" id="avg-k" style="font-size:20px;">—</div><div class="sl">Prom. kcal</div></div>
+        <div class="sbox" style="background:var(--s1);border:1px solid var(--border);border-radius:14px;flex:1;"><div class="sv" id="avg-p" style="font-size:20px;">—</div><div class="sl">Prom. prot</div></div>
+        <div class="sbox acc" style="border-radius:14px;flex:1;"><div class="sv" id="tot-d" style="font-size:20px;">0</div><div class="sl">Días reg.</div></div>
       </div>
       <div class="slabel">DÍAS REGISTRADOS</div>
       <div class="hl" id="hlist"></div>
@@ -491,7 +569,7 @@ nav{
       <div style="padding:0 14px 10px;">
         <div id="pwacard" class="pwacard" style="display:none;">
           <h3>📱 Instalar en pantalla de inicio</h3>
-          <p>Instalá NutriTrack como app nativa. Sin abrir el navegador, funciona offline.</p>
+          <p>Instalá NutriTrack como app nativa.</p>
           <button class="instbtn" id="instbtn">Instalar app</button>
         </div>
         <div class="icard">
@@ -507,17 +585,31 @@ nav{
       </div>
       <div class="cfgbody">
         <div class="field"><label>Peso corporal (kg)</label><input class="finput" id="cfg-w" type="number" inputmode="decimal" placeholder="80"></div>
+        <div class="field"><label>Altura (cm)</label><input class="finput" id="cfg-h" type="number" inputmode="numeric" placeholder="175"></div>
+        <div class="field"><label>Edad</label><input class="finput" id="cfg-age" type="number" inputmode="numeric" placeholder="25"></div>
+        <div class="field">
+          <label>Sexo</label>
+          <div class="sex-row">
+            <button class="sex-btn" id="cfg-sex-m" onclick="setCfgSex('m')">♂ Masculino</button>
+            <button class="sex-btn" id="cfg-sex-f" onclick="setCfgSex('f')">♀ Femenino</button>
+          </div>
+        </div>
         <div class="field"><label>Meta de calorías diarias</label><input class="finput" id="cfg-k" type="number" inputmode="numeric" placeholder="2500"></div>
         <div class="field"><label>Meta de proteína (g)</label><input class="finput" id="cfg-p" type="number" inputmode="numeric" placeholder="160"></div>
         <div class="field"><label>Meta de carbohidratos (g)</label><input class="finput" id="cfg-c" type="number" inputmode="numeric" placeholder="200"></div>
         <div class="field"><label>Meta de grasas (g)</label><input class="finput" id="cfg-f" type="number" inputmode="numeric" placeholder="70"></div>
+        <button class="recalc-btn" onclick="recalcMacros()">⚡ Recalcular metas automáticamente</button>
+        <div class="field" style="margin-top:14px;" id="apikey-field">
+          <label>API Key de Anthropic (para Foto IA)</label>
+          <input class="finput apikey-field" id="cfg-apikey" type="password" placeholder="sk-ant-...">
+          <div style="font-size:11px;color:var(--muted2);margin-top:5px;line-height:1.5;">Obtené tu key gratis en <b>console.anthropic.com</b> → API Keys. Se guarda solo en tu dispositivo.</div>
+        </div>
         <button class="savecfg" id="save-cfg">Guardar ajustes</button>
+        <div style="height:14px;"></div>
+        <button onclick="resetOnboard()" style="width:100%;padding:12px;background:none;border:1.5px solid var(--border);border-radius:12px;color:var(--muted2);font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;">↩ Rehacer configuración inicial</button>
       </div>
     </section>
   </div>
-
-  <!-- BARRA QUEMADAS (solo visible en pantalla Hoy) -->
-  
 
   <nav>
     <button class="nb active" id="nav-hoy" onclick="goScreen('hoy')">
@@ -541,12 +633,11 @@ nav{
 <div id="toast"></div>
 
 <script>
-// ══ FOOD DATABASE ══
 const FOODS=[
   // LÁCTEOS
-  {id:'f1',name:'Mozzarella Conaprole',cat:'Lácteos',porc:30,unit:'g',prot:7,fat:7,carb:0,sat:4,kcal:94},
+  {id:'f1',name:'Mozzarella',cat:'Lácteos',porc:30,unit:'g',prot:7,fat:7,carb:0,sat:4,kcal:94},
   {id:'f2',name:'Leche entera',cat:'Lácteos',porc:200,unit:'ml',prot:7,fat:5,carb:10,sat:3,kcal:115},
-  {id:'f3',name:'Leche proteína',cat:'Lácteos',porc:200,unit:'ml',prot:11,fat:0,carb:9.9,sat:0,kcal:84},
+  {id:'f3',name:'Leche proteína (alta proteína)',cat:'Lácteos',porc:200,unit:'ml',prot:11,fat:0,carb:9.9,sat:0,kcal:84},
   {id:'f4',name:'Queso Fontina',cat:'Lácteos',porc:30,unit:'g',prot:7.5,fat:8.8,carb:0,sat:5.2,kcal:109},
   {id:'f5',name:'Crema de leche',cat:'Lácteos',porc:15,unit:'ml',prot:0,fat:6,carb:0,sat:4,kcal:52},
   {id:'f6',name:'Queso Parmesano',cat:'Lácteos',porc:30,unit:'g',prot:10,fat:9,carb:0,sat:6,kcal:120},
@@ -604,7 +695,7 @@ const FOODS=[
   {id:'f48',name:'Arroz blanco cocido',cat:'Cereales',porc:100,unit:'g',prot:7,fat:0,carb:78,sat:0,kcal:345},
   {id:'f49',name:'Pan francés',cat:'Cereales',porc:50,unit:'g',prot:4,fat:1,carb:24,sat:0,kcal:120},
   {id:'f50',name:'Pan tortuga mayorquina',cat:'Cereales',porc:1,unit:'u',prot:4.1,fat:4.1,carb:30,sat:0,kcal:174},
-  {id:'f51',name:'Pan molde Bauduco',cat:'Cereales',porc:50,unit:'g',prot:4,fat:1.7,carb:25,sat:0,kcal:131},
+  {id:'f51',name:'Pan molde lactal',cat:'Cereales',porc:50,unit:'g',prot:4,fat:1.7,carb:25,sat:0,kcal:131},
   {id:'f52',name:'Fideos / Pastas cocidas',cat:'Cereales',porc:80,unit:'g',prot:10,fat:1,carb:57,sat:0,kcal:286},
   {id:'f53',name:'Avena',cat:'Cereales',porc:30,unit:'g',prot:4.7,fat:2.3,carb:16,sat:0.4,kcal:105},
   {id:'f54',name:'Arepa',cat:'Cereales',porc:60,unit:'g',prot:2,fat:1,carb:25,sat:0,kcal:130},
@@ -627,17 +718,99 @@ let viewDate=new Date(); viewDate.setHours(0,0,0,0);
 function dk(d){const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');return y+'-'+m+'-'+day;}
 function getDay(k){try{return JSON.parse(localStorage.getItem('day_'+k)||'null')||{foods:[],burned:0};}catch{return{foods:[],burned:0};}}
 function saveDay(k,d){localStorage.setItem('day_'+k,JSON.stringify(d));}
-let cfg=JSON.parse(localStorage.getItem('cfg')||'null')||{weight:80,goalKcal:2500,goalProt:160,goalCarb:200,goalFat:70};
+let cfg=JSON.parse(localStorage.getItem('cfg')||'null')||{weight:80,height:175,age:25,sex:'m',activity:'mod',goal:'maint',goalKcal:2500,goalProt:160,goalCarb:200,goalFat:70,apiKey:''};
 function saveCfg(){localStorage.setItem('cfg',JSON.stringify(cfg));}
 let favs=JSON.parse(localStorage.getItem('favs')||'[]');
 function saveFavs(){localStorage.setItem('favs',JSON.stringify(favs));}
+function r1(n){return Math.round(n*10)/10;}
+
+// ══ TDEE CALCULATOR ══
+const ACT_MULT={sed:1.2,light:1.375,mod:1.55,high:1.725};
+const GOAL_ADJ={cut:-400,maint:0,bulk:+300};
+function calcTDEE(weight,height,age,sex,activity){
+  const bmr=sex==='m'
+    ? 88.362+(13.397*weight)+(4.799*height)-(5.677*age)
+    : 447.593+(9.247*weight)+(3.098*height)-(4.330*age);
+  return Math.round(bmr*(ACT_MULT[activity]||1.55));
+}
+function calcMacros(weight,tdee,goal){
+  const kcal=Math.round(tdee+(GOAL_ADJ[goal]||0));
+  const protG=Math.round(weight*(goal==='bulk'?2.2:goal==='cut'?2.0:1.8));
+  const fatG=Math.round(kcal*0.25/9);
+  const carbG=Math.round((kcal-protG*4-fatG*9)/4);
+  return{kcal,prot:protG,fat:fatG,carb:Math.max(carbG,50)};
+}
+
+// ══ ONBOARDING ══
+let obSex='m', obActivity='sed', obGoal='cut';
+function setSex(s){obSex=s;document.getElementById('sex-m').classList.toggle('on',s==='m');document.getElementById('sex-f').classList.toggle('on',s==='f');}
+function setActivity(a,el){obActivity=a;document.querySelectorAll('#step1 .ob-opt').forEach(e=>e.classList.remove('on'));el.classList.add('on');}
+function setGoal(g,el){obGoal=g;document.querySelectorAll('#step2 .ob-opt').forEach(e=>e.classList.remove('on'));el.classList.add('on');updateObPreview();}
+function updateObPreview(){
+  const w=parseFloat(document.getElementById('ob-weight').value)||75;
+  const h=parseFloat(document.getElementById('ob-height').value)||175;
+  const a=parseFloat(document.getElementById('ob-age').value)||25;
+  const tdee=calcTDEE(w,h,a,obSex,obActivity);
+  const m=calcMacros(w,tdee,obGoal);
+  document.getElementById('rp-kcal').textContent=m.kcal;
+  document.getElementById('rp-prot').textContent=m.prot+'g';
+  document.getElementById('rp-carb').textContent=m.carb+'g';
+  document.getElementById('rp-fat').textContent=m.fat+'g';
+}
+function obNext(step){
+  if(step===1){
+    const w=parseFloat(document.getElementById('ob-weight').value);
+    const h=parseFloat(document.getElementById('ob-height').value);
+    const a=parseFloat(document.getElementById('ob-age').value);
+    if(!w||!h||!a){toast('Completá todos los campos');return;}
+  }
+  document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+  document.getElementById('step'+step).classList.add('active');
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('on',i<=step));
+  if(step===2) updateObPreview();
+}
+function finishOnboard(){
+  const w=parseFloat(document.getElementById('ob-weight').value)||75;
+  const h=parseFloat(document.getElementById('ob-height').value)||175;
+  const a=parseFloat(document.getElementById('ob-age').value)||25;
+  const tdee=calcTDEE(w,h,a,obSex,obActivity);
+  const m=calcMacros(w,tdee,obGoal);
+  cfg={...cfg,weight:w,height:h,age:a,sex:obSex,activity:obActivity,goal:obGoal,
+    goalKcal:m.kcal,goalProt:m.prot,goalCarb:m.carb,goalFat:m.fat};
+  saveCfg();
+  localStorage.setItem('onboarded','1');
+  goScreen('hoy');
+}
+function resetOnboard(){
+  localStorage.removeItem('onboarded');
+  document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+  document.getElementById('step0').classList.add('active');
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('on',i===0));
+  goScreen('onboard');
+}
+function recalcMacros(){
+  const w=parseFloat(document.getElementById('cfg-w').value)||cfg.weight;
+  const h=parseFloat(document.getElementById('cfg-h').value)||cfg.height;
+  const a=parseFloat(document.getElementById('cfg-age').value)||cfg.age;
+  const s=cfg.sex||'m';
+  const act=cfg.activity||'mod';
+  const g=cfg.goal||'maint';
+  const tdee=calcTDEE(w,h,a,s,act);
+  const m=calcMacros(w,tdee,g);
+  document.getElementById('cfg-k').value=m.kcal;
+  document.getElementById('cfg-p').value=m.prot;
+  document.getElementById('cfg-c').value=m.carb;
+  document.getElementById('cfg-f').value=m.fat;
+  toast('⚡ Metas recalculadas: '+m.kcal+' kcal');
+}
 
 // ══ NAV ══
 function goScreen(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.nb').forEach(b=>b.classList.remove('active'));
   document.getElementById('sc-'+id).classList.add('active');
-  document.getElementById('nav-'+id).classList.add('active');
+  const nb=document.getElementById('nav-'+id);
+  if(nb) nb.classList.add('active');
   if(id==='hoy') renderHoy();
   if(id==='hist') renderHist();
   if(id==='cfg') renderCfg();
@@ -645,7 +818,6 @@ function goScreen(id){
 }
 
 // ══ HOY ══
-function r1(n){return Math.round(n*10)/10;}
 function renderHoy(){
   const k=dk(viewDate), day=getDay(k);
   const today=new Date(); today.setHours(0,0,0,0);
@@ -653,7 +825,7 @@ function renderHoy(){
   const ds=document.getElementById('date-str');
   if(isToday) ds.textContent='Hoy';
   else if(viewDate.getTime()===today.getTime()-86400000) ds.textContent='Ayer';
-  else ds.textContent=viewDate.toLocaleDateString('es-UY',{day:'2-digit',month:'2-digit'});
+  else ds.textContent=viewDate.toLocaleDateString('es',{day:'2-digit',month:'2-digit'});
   let tp=0,tf=0,tc=0,tk=0;
   day.foods.forEach(f=>{tp+=f.prot;tf+=f.fat;tc+=f.carb;tk+=f.kcal;});
   const burned=day.burned||0, net=tk-burned;
@@ -693,77 +865,33 @@ function renderHoy(){
       </button>
     </div>`).join('');
 }
-function delFood(i){
-  const k=dk(viewDate), day=getDay(k);
-  day.foods.splice(i,1); saveDay(k,day); renderHoy(); toast('Eliminado');
-}
+function delFood(i){const k=dk(viewDate),day=getDay(k);day.foods.splice(i,1);saveDay(k,day);renderHoy();toast('Eliminado');}
 document.getElementById('prev-day').onclick=()=>{viewDate=new Date(viewDate.getTime()-86400000);renderHoy();};
-document.getElementById('next-day').onclick=()=>{
-  const t=new Date();t.setHours(0,0,0,0);
-  if(viewDate<t){viewDate=new Date(viewDate.getTime()+86400000);renderHoy();}
-};
-// ── BURNED DATE SELECTOR ──
-let burnedDateMode='hoy';
-function selectBurnedDate(mode){
-  burnedDateMode=mode;
-  ['hoy','ayer','ante','custom'].forEach(m=>{
-    document.getElementById('ds-'+m).classList.toggle('on', m===mode);
-  });
-  const pickerWrap=document.getElementById('date-picker-wrap');
-  if(mode==='custom'){
-    pickerWrap.classList.add('show');
-    // default to today if empty
-    if(!document.getElementById('burned-date-picker').value){
-      document.getElementById('burned-date-picker').value=dk(new Date());
-    }
-  } else {
-    pickerWrap.classList.remove('show');
-  }
-}
-function getBurnedTargetKey(){
-  const today=new Date(); today.setHours(0,0,0,0);
-  if(burnedDateMode==='hoy') return dk(today);
-  if(burnedDateMode==='ayer') return dk(new Date(today.getTime()-86400000));
-  if(burnedDateMode==='ante') return dk(new Date(today.getTime()-2*86400000));
-  if(burnedDateMode==='custom'){
-    const val=document.getElementById('burned-date-picker').value;
-    return val||dk(today);
-  }
-  return dk(today);
-}
-document.getElementById('save-burned').onclick=()=>{
-  const kcal=parseFloat(document.getElementById('burned-inp').value)||0;
-  if(kcal<=0){toast('Ingresá las calorías quemadas');return;}
-  const k=getBurnedTargetKey();
-  const day=getDay(k);
-  day.burned=kcal;
-  saveDay(k,day);
-  // show which day was saved
-  const labels={'hoy':'hoy','ayer':'ayer','ante':'anteayer','custom':k};
-  toast('🔥 '+Math.round(kcal)+' kcal quemadas guardadas para '+labels[burnedDateMode]);
-  document.getElementById('burned-inp').value='';
-  renderHist();
-};
+document.getElementById('next-day').onclick=()=>{const t=new Date();t.setHours(0,0,0,0);if(viewDate<t){viewDate=new Date(viewDate.getTime()+86400000);renderHoy();}};
 
 // ══ ADD ══
 let curTab='local', selFood=null, webRes=[], webTimer=null;
 function switchTab(t){
   curTab=t;
-  ['local','favs','web','manual'].forEach(x=>document.getElementById('tab-'+x).classList.toggle('on',x===t));
-  document.getElementById('fpanel').classList.remove('show');
-  selFood=null; webRes=[];
-  // show/hide manual panel and search bar
-  const isManual=t==='manual';
-  document.getElementById('manual-panel').classList.toggle('show', isManual);
-  document.querySelector('.sbar').style.display=isManual?'none':'block';
-  document.querySelector('.stabs').style.position=isManual?'static':'sticky';
-  if(!isManual) renderList();
+  ['local','favs','web','manual','foto'].forEach(x=>document.getElementById('tab-'+x).classList.toggle('on',x===t));
+  document.getElementById('fpanel').classList.remove('show'); selFood=null; webRes=[];
+  const isManual=t==='manual', isFoto=t==='foto';
+  const isSpecial=isManual||isFoto;
+  document.getElementById('manual-panel').classList.toggle('show',isManual);
+  document.getElementById('photo-panel').classList.toggle('show',isFoto);
+  document.getElementById('sbar').style.display=isSpecial?'none':'block';
+  document.getElementById('rlist').innerHTML='';
+  if(isFoto){
+    const hasKey=!!(cfg.apiKey&&cfg.apiKey.startsWith('sk-'));
+    document.getElementById('no-apikey-notice').style.display=hasKey?'none':'block';
+  }
+  if(!isSpecial) renderList();
 }
 const sinp=document.getElementById('search-inp'), xbtn=document.getElementById('xbtn');
 sinp.addEventListener('input',()=>{
   xbtn.classList.toggle('show',sinp.value.length>0);
   if(curTab==='local'||curTab==='favs') renderList();
-  else { webRes=[]; clearTimeout(webTimer); const q=sinp.value.trim(); if(!q){renderList();return;} document.getElementById('rlist').innerHTML='<div class="wspin"><div class="spin"></div>Buscando "'+q+'"...</div>'; webTimer=setTimeout(()=>doWebSearch(q),900); }
+  else if(curTab==='web'){ webRes=[];clearTimeout(webTimer);const q=sinp.value.trim();if(!q){renderList();return;}document.getElementById('rlist').innerHTML='<div class="wspin"><div class="spin"></div>Buscando "'+q+'"...</div>';webTimer=setTimeout(()=>doWebSearch(q),900);}
 });
 xbtn.onclick=()=>{sinp.value='';xbtn.classList.remove('show');webRes=[];document.getElementById('fpanel').classList.remove('show');selFood=null;renderList();};
 
@@ -771,8 +899,8 @@ function renderList(){
   const q=sinp.value.toLowerCase().trim();
   const el=document.getElementById('rlist');
   if(curTab==='web'){
-    if(!q){el.innerHTML='<div class="empty"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg><p>Escribí un alimento para<br>buscar información en internet</p></div>';return;}
-    if(webRes.length) renderWebList(webRes); return;
+    if(!q){el.innerHTML='<div class="empty"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg><p>Escribí un alimento para buscar en internet</p></div>';return;}
+    if(webRes.length){renderWebList(webRes);}return;
   }
   let list=curTab==='favs'?FOODS.filter(f=>favs.includes(f.id)):FOODS;
   if(q) list=list.filter(f=>f.name.toLowerCase().includes(q)||f.cat.toLowerCase().includes(q));
@@ -793,9 +921,7 @@ function renderList(){
   });
   el.innerHTML=html;
 }
-
 function selectFood(food){selFood=food;renderList();showPanel(food);}
-
 function showPanel(f){
   const p=document.getElementById('fpanel');
   document.getElementById('fpname').textContent=f.name;
@@ -803,14 +929,13 @@ function showPanel(f){
   document.getElementById('fpchips').innerHTML=`<span class="chip cp">P: ${f.prot}g</span><span class="chip cc">C: ${f.carb}g</span><span class="chip cf">G: ${f.fat}g</span><span class="chip ck">${f.kcal} kcal</span>`;
   document.getElementById('gunit').textContent=f.unit==='u'?'unidades':f.unit;
   document.getElementById('ginput').value=f.porc;
-  updatePreview();
-  p.classList.add('show');
+  updatePreview();p.classList.add('show');
   document.getElementById('fav-btn').classList.toggle('on',favs.includes(f.id));
   setTimeout(()=>p.scrollIntoView({behavior:'smooth',block:'nearest'}),100);
 }
 document.getElementById('ginput').addEventListener('input',updatePreview);
 function updatePreview(){
-  if(!selFood) return;
+  if(!selFood)return;
   const amt=parseFloat(document.getElementById('ginput').value)||0;
   const ratio=selFood.unit==='u'?amt:amt/selFood.porc;
   document.getElementById('pv-k').textContent=Math.round(selFood.kcal*ratio);
@@ -819,29 +944,26 @@ function updatePreview(){
   document.getElementById('pv-f').textContent=r1(selFood.fat*ratio)+'g';
 }
 document.getElementById('confirm-add').onclick=()=>{
-  if(!selFood) return;
+  if(!selFood)return;
   const amt=parseFloat(document.getElementById('ginput').value)||0;
   if(amt<=0){toast('Ingresá una cantidad');return;}
   const ratio=selFood.unit==='u'?amt:amt/selFood.porc;
   const entry={name:selFood.name,amount:amt,unit:selFood.unit==='u'?'u':selFood.unit,prot:selFood.prot*ratio,fat:selFood.fat*ratio,carb:selFood.carb*ratio,sat:(selFood.sat||0)*ratio,kcal:selFood.kcal*ratio};
-  const k=dk(viewDate), day=getDay(k);
-  day.foods.push(entry); saveDay(k,day);
+  const k=dk(viewDate),day=getDay(k);day.foods.push(entry);saveDay(k,day);
   toast('✓ '+selFood.name+' agregado');
   document.getElementById('fpanel').classList.remove('show');
   sinp.value='';xbtn.classList.remove('show');selFood=null;webRes=[];
-  renderList(); goScreen('hoy');
+  renderList();goScreen('hoy');
 };
 document.getElementById('fav-btn').onclick=()=>{
-  if(!selFood||!selFood.id) return;
+  if(!selFood||!selFood.id)return;
   const i=favs.indexOf(selFood.id);
   if(i>=0){favs.splice(i,1);toast('Eliminado de favoritos');}
   else{favs.push(selFood.id);toast('⭐ Favorito guardado');}
-  saveFavs(); document.getElementById('fav-btn').classList.toggle('on',favs.includes(selFood.id));
-  renderList();
+  saveFavs();document.getElementById('fav-btn').classList.toggle('on',favs.includes(selFood.id));renderList();
 };
 
-
-// ── ENTRADA MANUAL ──
+// ── MANUAL ──
 document.getElementById('confirm-manual').onclick=()=>{
   const kcal=parseFloat(document.getElementById('m-kcal').value)||0;
   if(kcal<=0){toast('Ingresá las calorías');return;}
@@ -851,49 +973,102 @@ document.getElementById('confirm-manual').onclick=()=>{
   const fat=parseFloat(document.getElementById('m-fat').value)||0;
   const amount=parseFloat(document.getElementById('m-amount').value)||1;
   const entry={name,amount,unit:'u',prot,fat,carb,sat:0,kcal};
-  const k=dk(viewDate), day=getDay(k);
-  day.foods.push(entry); saveDay(k,day);
+  const k=dk(viewDate),day=getDay(k);day.foods.push(entry);saveDay(k,day);
   toast('✓ '+name+' agregado');
-  // clear fields
   ['m-name','m-kcal','m-prot','m-carb','m-fat','m-amount'].forEach(id=>document.getElementById(id).value='');
   goScreen('hoy');
 };
 
-// ── WEB SEARCH (Open Food Facts) ──
+// ── FOTO IA ──
+let photoBase64=null, photoMime=null;
+document.getElementById('photo-input').addEventListener('change',e=>{
+  const file=e.target.files[0]; if(!file)return;
+  photoMime=file.type;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    photoBase64=ev.target.result.split(',')[1];
+    const img=document.getElementById('photo-preview');
+    img.src=ev.target.result; img.classList.add('show');
+    document.getElementById('analyze-btn').disabled=false;
+    document.getElementById('photo-result').classList.remove('show');
+  };
+  reader.readAsDataURL(file);
+});
+document.getElementById('analyze-btn').onclick=()=>analyzePhoto();
+async function analyzePhoto(){
+  if(!photoBase64){toast('Primero seleccioná una foto');return;}
+  if(!cfg.apiKey||!cfg.apiKey.startsWith('sk-')){
+    toast('Agregá tu API Key en Ajustes');goScreen('cfg');return;
+  }
+  const btn=document.getElementById('analyze-btn');
+  const resDiv=document.getElementById('photo-result');
+  btn.disabled=true; btn.textContent='Analizando...';
+  resDiv.classList.remove('show');
+  resDiv.innerHTML='<div class="wspin"><div class="spin"></div>Identificando alimento...</div>';
+  resDiv.classList.add('show');
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':cfg.apiKey,'anthropic-version':'2023-06-01'},
+      body:JSON.stringify({
+        model:'claude-opus-4-5',max_tokens:400,
+        messages:[{role:'user',content:[
+          {type:'image',source:{type:'base64',media_type:photoMime,data:photoBase64}},
+          {type:'text',text:'Identificá el alimento de la foto y estimá los valores nutricionales por 100g. Respondé SOLO con este JSON sin explicaciones: {"name":"nombre del alimento","portion":100,"unit":"g","prot":10,"fat":5,"carb":20,"kcal":165,"confidence":"alta/media/baja"}'}
+        ]}]
+      })
+    });
+    const data=await res.json();
+    const text=(data.content||[]).map(b=>b.text||'').join('');
+    const m=text.match(/\{[\s\S]*?\}/);
+    if(m){
+      const r=JSON.parse(m[0]);
+      const food={id:'photo_'+Date.now(),name:r.name||'Alimento fotografiado',cat:'Foto IA',
+        porc:r.portion||100,unit:r.unit||'g',
+        prot:+r.prot||0,fat:+r.fat||0,carb:+r.carb||0,sat:0,kcal:+r.kcal||0,notes:'Confianza: '+(r.confidence||'media')};
+      resDiv.innerHTML=`
+        <div style="font-size:12px;color:var(--muted2);margin-bottom:8px;">🎯 Confianza: ${r.confidence||'media'}</div>
+        <div style="font-size:16px;font-weight:800;margin-bottom:10px;">${food.name}</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;">
+          <span class="chip cp">P: ${food.prot}g</span>
+          <span class="chip cc">C: ${food.carb}g</span>
+          <span class="chip cf">G: ${food.fat}g</span>
+          <span class="chip ck">${food.kcal} kcal</span>
+        </div>`;
+      selectFood(food);
+      switchTab('local');
+      // keep panel open
+      setTimeout(()=>showPanel(food),100);
+    } else {
+      resDiv.innerHTML='<div style="color:var(--danger);font-size:13px;">No se pudo identificar el alimento. Intentá con otra foto más clara.</div>';
+    }
+  }catch(e){
+    resDiv.innerHTML='<div style="color:var(--danger);font-size:13px;">Error: '+e.message+'</div>';
+  }finally{
+    btn.disabled=false; btn.textContent='🔍 Analizar con IA';
+  }
+}
+
+// ── WEB SEARCH ──
 async function doWebSearch(query){
   try{
     const url='https://world.openfoodfacts.org/cgi/search.pl?search_terms='+encodeURIComponent(query)+'&json=1&page_size=8&fields=product_name,brands,nutriments,quantity';
     const res=await fetch(url);
     const data=await res.json();
-    if(!data.products||!data.products.length){
-      document.getElementById('rlist').innerHTML='<div class="empty"><p>Sin resultados para <b>'+query+'</b></p></div>';
-      return;
-    }
-    webRes=data.products
-      .filter(p=>p.product_name&&p.nutriments)
-      .slice(0,6)
-      .map((p,i)=>{
-        const n=p.nutriments;
-        const prot=+(n['proteins_100g']||n['proteins']||0).toFixed(1);
-        const fat=+(n['fat_100g']||n['fat']||0).toFixed(1);
-        const carb=+(n['carbohydrates_100g']||n['carbohydrates']||0).toFixed(1);
-        const kcal=Math.round(n['energy-kcal_100g']||n['energy-kcal']||(n['energy_100g']||0)/4.184||0);
-        const brand=p.brands?p.brands.split(',')[0].trim():'';
-        return{id:'w'+Date.now()+i,name:p.product_name,cat:'Resultado web',
-          porc:100,unit:'g',prot,fat,carb,sat:+(n['saturated-fat_100g']||0).toFixed(1),
-          kcal,notes:brand};
-      })
-      .filter(p=>p.kcal>0||p.prot>0);
-    if(!webRes.length){
-      document.getElementById('rlist').innerHTML='<div class="empty"><p>No se encontraron datos nutricionales</p></div>';
-      return;
-    }
+    if(!data.products||!data.products.length){document.getElementById('rlist').innerHTML='<div class="empty"><p>Sin resultados para <b>'+query+'</b></p></div>';return;}
+    webRes=data.products.filter(p=>p.product_name&&p.nutriments).slice(0,6).map((p,i)=>{
+      const n=p.nutriments;
+      const prot=+(n['proteins_100g']||n['proteins']||0).toFixed(1);
+      const fat=+(n['fat_100g']||n['fat']||0).toFixed(1);
+      const carb=+(n['carbohydrates_100g']||n['carbohydrates']||0).toFixed(1);
+      const kcal=Math.round(n['energy-kcal_100g']||n['energy-kcal']||(n['energy_100g']||0)/4.184||0);
+      const brand=p.brands?p.brands.split(',')[0].trim():'';
+      return{id:'w'+Date.now()+i,name:p.product_name,cat:'Resultado web',porc:100,unit:'g',prot,fat,carb,sat:+(n['saturated-fat_100g']||0).toFixed(1),kcal,notes:brand};
+    }).filter(p=>p.kcal>0||p.prot>0);
+    if(!webRes.length){document.getElementById('rlist').innerHTML='<div class="empty"><p>Sin datos nutricionales</p></div>';return;}
     renderWebList(webRes);
-  }catch(e){
-    document.getElementById('rlist').innerHTML='<div class="empty"><p>Error de conexión. Verificá el internet.</p></div>';
-  }
+  }catch(e){document.getElementById('rlist').innerHTML='<div class="empty"><p>Error de conexión.</p></div>';}
 }
-
 function renderWebList(list){
   if(!list.length){document.getElementById('rlist').innerHTML='<div class="empty"><p>Sin resultados</p></div>';return;}
   document.getElementById('rlist').innerHTML=list.map(f=>`
@@ -910,51 +1085,25 @@ const DAYS=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
 const MONTHS=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
 function renderHist(){
   const today=new Date();today.setHours(0,0,0,0);
-  // ── déficit/superávit de hoy ──
+  // déficit hoy
   const todayDay=getDay(dk(today));
-  let todayKcal=0, todayProt=0;
-  todayDay.foods.forEach(f=>{todayKcal+=f.kcal; todayProt+=f.prot;});
-  const todayBurned=todayDay.burned||0;
-  const todayNetas=todayKcal-todayBurned;
+  let todayKcal=0,todayProt=0;
+  todayDay.foods.forEach(f=>{todayKcal+=f.kcal;todayProt+=f.prot;});
+  const todayBurned=todayDay.burned||0, todayNetas=todayKcal-todayBurned;
   const balance=todayNetas-cfg.goalKcal;
-  const defCard=document.getElementById('deficit-card');
-  const defVal=document.getElementById('deficit-val');
-  const defSub=document.getElementById('deficit-sub');
-  const defIcon=document.getElementById('deficit-icon');
+  const defCard=document.getElementById('deficit-card'),defVal=document.getElementById('deficit-val');
+  const defSub=document.getElementById('deficit-sub'),defIcon=document.getElementById('deficit-icon');
   document.getElementById('bg-ingeridas').textContent=Math.round(todayKcal)+' kcal';
   document.getElementById('bg-quemadas').textContent=Math.round(todayBurned)+' kcal';
   document.getElementById('bg-meta').textContent=Math.round(cfg.goalKcal)+' kcal';
   document.getElementById('bg-netas').textContent=Math.round(todayNetas)+' kcal';
-  if(todayKcal===0){
-    defCard.className='deficit-card neutral';
-    defVal.className='dc-val neutral'; defVal.textContent='—';
-    defIcon.textContent='⚖️';
-    defSub.textContent='Sin comidas registradas hoy';
-  } else if(balance<0){
-    const def=Math.abs(balance);
-    defCard.className='deficit-card green';
-    defVal.className='dc-val green'; defVal.textContent='-'+Math.round(def)+' kcal';
-    defIcon.textContent='📉';
-    defSub.textContent='Déficit calórico · Meta: '+Math.round(cfg.goalKcal)+' kcal';
-  } else if(balance>0){
-    defCard.className='deficit-card red';
-    defVal.className='dc-val red'; defVal.textContent='+'+Math.round(balance)+' kcal';
-    defIcon.textContent='📈';
-    defSub.textContent='Superávit calórico · Meta: '+Math.round(cfg.goalKcal)+' kcal';
-  } else {
-    defCard.className='deficit-card neutral';
-    defVal.className='dc-val neutral'; defVal.textContent='En meta';
-    defIcon.textContent='🎯';
-    defSub.textContent='Exactamente en tu meta calórica';
-  }
+  if(todayKcal===0){defCard.className='deficit-card neutral';defVal.className='dc-val neutral';defVal.textContent='—';defIcon.textContent='⚖️';defSub.textContent='Sin comidas registradas hoy';}
+  else if(balance<0){defCard.className='deficit-card green';defVal.className='dc-val green';defVal.textContent='-'+Math.round(Math.abs(balance))+' kcal';defIcon.textContent='📉';defSub.textContent='Déficit · Meta: '+Math.round(cfg.goalKcal)+' kcal';}
+  else if(balance>0){defCard.className='deficit-card red';defVal.className='dc-val red';defVal.textContent='+'+Math.round(balance)+' kcal';defIcon.textContent='📈';defSub.textContent='Superávit · Meta: '+Math.round(cfg.goalKcal)+' kcal';}
+  else{defCard.className='deficit-card neutral';defVal.className='dc-val neutral';defVal.textContent='En meta';defIcon.textContent='🎯';defSub.textContent='Exactamente en tu meta';}
+  // chart
   const days=[];
-  for(let i=period-1;i>=0;i--){
-    const d=new Date(today.getTime()-i*86400000);
-    const k=dk(d), day=getDay(k);
-    let tp=0,tf=0,tc=0,tk=0;
-    day.foods.forEach(f=>{tp+=f.prot;tf+=f.fat;tc+=f.carb;tk+=f.kcal;});
-    days.push({d,k,prot:tp,fat:tf,carb:tc,kcal:tk,burned:day.burned||0});
-  }
+  for(let i=period-1;i>=0;i--){const d=new Date(today.getTime()-i*86400000);const k=dk(d),day=getDay(k);let tp=0,tf=0,tc=0,tk=0;day.foods.forEach(f=>{tp+=f.prot;tf+=f.fat;tc+=f.carb;tk+=f.kcal;});days.push({d,prot:tp,fat:tf,carb:tc,kcal:tk,burned:day.burned||0});}
   const maxK=Math.max(...days.map(d=>d.kcal),1);
   document.getElementById('bchart').innerHTML=days.map(d=>{
     const isT=d.d.getTime()===today.getTime();
@@ -963,45 +1112,62 @@ function renderHist(){
     return `<div class="bc"><div class="bbar ${isT?'bt':'bp'}" style="height:${h}%" title="${Math.round(d.kcal)} kcal"></div><div class="bday">${lbl}</div></div>`;
   }).join('');
   const wd=days.filter(d=>d.kcal>0);
-  const avgK=wd.length?Math.round(wd.reduce((a,d)=>a+d.kcal,0)/wd.length):0;
-  const avgP=wd.length?Math.round(wd.reduce((a,d)=>a+d.prot,0)/wd.length):0;
-  document.getElementById('avg-k').textContent=avgK||'—';
-  document.getElementById('avg-p').textContent=avgP?avgP+'g':'—';
+  document.getElementById('avg-k').textContent=wd.length?Math.round(wd.reduce((a,d)=>a+d.kcal,0)/wd.length):'—';
+  document.getElementById('avg-p').textContent=wd.length?Math.round(wd.reduce((a,d)=>a+d.prot,0)/wd.length)+'g':'—';
   document.getElementById('tot-d').textContent=wd.length;
   const allKeys=Object.keys(localStorage).filter(k=>k.startsWith('day_')).sort().reverse();
   const hl=document.getElementById('hlist');
   if(!allKeys.length){hl.innerHTML='<div class="empty"><p>Todavía no hay historial</p></div>';return;}
   hl.innerHTML=allKeys.slice(0,60).map(k=>{
-    const key=k.replace('day_',''), day=getDay(key);
-    if(!day.foods.length&&!day.burned) return '';
-    let tp=0,tf=0,tc=0,tk2=0;
-    day.foods.forEach(f=>{tp+=f.prot;tf+=f.fat;tc+=f.carb;tk2+=f.kcal;});
-    const pts=key.split('-');
-    const dt=new Date(+pts[0],+pts[1]-1,+pts[2]);
-    const isT2=dk(dt)===dk(today);
-    const isY=dk(dt)===dk(new Date(today.getTime()-86400000));
+    const key=k.replace('day_',''),day=getDay(key);
+    if(!day.foods.length&&!day.burned)return '';
+    let tp=0,tf=0,tc=0,tk2=0;day.foods.forEach(f=>{tp+=f.prot;tf+=f.fat;tc+=f.carb;tk2+=f.kcal;});
+    const pts=key.split('-');const dt=new Date(+pts[0],+pts[1]-1,+pts[2]);
+    const isT2=dk(dt)===dk(today),isY=dk(dt)===dk(new Date(today.getTime()-86400000));
     const dlbl=isT2?'Hoy':isY?'Ayer':DAYS[dt.getDay()];
-    return `<div class="hitem">
-      <div class="hd"><div class="hdd">${dt.getDate()}</div><div class="hdm">${MONTHS[dt.getMonth()]}</div></div>
-      <div class="hinfo">
-        <div class="hn">${dlbl} · ${day.foods.length} comidas${day.burned?' · 🔥'+Math.round(day.burned)+'kcal':''}</div>
-        <div class="hm"><span style="color:var(--prot)">${r1(tp)}g P</span><span style="color:var(--carb)">${r1(tc)}g C</span><span style="color:var(--fat)">${r1(tf)}g G</span></div>
-      </div>
-      <div class="hk">${Math.round(tk2)}<small> kcal</small></div>
-    </div>`;
+    return `<div class="hitem"><div class="hd"><div class="hdd">${dt.getDate()}</div><div class="hdm">${MONTHS[dt.getMonth()]}</div></div><div class="hinfo"><div class="hn">${dlbl} · ${day.foods.length} comidas${day.burned?' · 🔥'+Math.round(day.burned)+'kcal':''}</div><div class="hm"><span style="color:var(--prot)">${r1(tp)}g P</span><span style="color:var(--carb)">${r1(tc)}g C</span><span style="color:var(--fat)">${r1(tf)}g G</span></div></div><div class="hk">${Math.round(tk2)}<small> kcal</small></div></div>`;
   }).join('');
 }
 
+// ── QUEMADAS ──
+let burnedDateMode='hoy';
+function selectBurnedDate(mode){
+  burnedDateMode=mode;
+  ['hoy','ayer','ante','custom'].forEach(m=>document.getElementById('ds-'+m).classList.toggle('on',m===mode));
+  const pw=document.getElementById('date-picker-wrap');
+  pw.classList.toggle('show',mode==='custom');
+  if(mode==='custom'&&!document.getElementById('burned-date-picker').value) document.getElementById('burned-date-picker').value=dk(new Date());
+}
+function getBurnedKey(){
+  const today=new Date();today.setHours(0,0,0,0);
+  if(burnedDateMode==='hoy')return dk(today);
+  if(burnedDateMode==='ayer')return dk(new Date(today.getTime()-86400000));
+  if(burnedDateMode==='ante')return dk(new Date(today.getTime()-2*86400000));
+  return document.getElementById('burned-date-picker').value||dk(today);
+}
+document.getElementById('save-burned').onclick=()=>{
+  const kcal=parseFloat(document.getElementById('burned-inp').value)||0;
+  if(kcal<=0){toast('Ingresá las calorías quemadas');return;}
+  const k=getBurnedKey(),day=getDay(k);day.burned=kcal;saveDay(k,day);
+  const labels={hoy:'hoy',ayer:'ayer',ante:'anteayer',custom:k};
+  toast('🔥 '+Math.round(kcal)+' kcal guardadas para '+labels[burnedDateMode]);
+  document.getElementById('burned-inp').value='';renderHist();
+};
+
 // ══ CONFIG ══
+function setCfgSex(s){cfg.sex=s;document.getElementById('cfg-sex-m').classList.toggle('on',s==='m');document.getElementById('cfg-sex-f').classList.toggle('on',s==='f');}
 function renderCfg(){
-  document.getElementById('cfg-w').value=cfg.weight||'';
-  document.getElementById('cfg-k').value=cfg.goalKcal||'';
-  document.getElementById('cfg-p').value=cfg.goalProt||'';
-  document.getElementById('cfg-c').value=cfg.goalCarb||'';
-  document.getElementById('cfg-f').value=cfg.goalFat||'';
-  const k=dk(new Date()), day=getDay(k);
-  let tp=0,tf=0,tc=0,tk=0;
-  day.foods.forEach(f=>{tp+=f.prot;tf+=f.fat;tc+=f.carb;tk+=f.kcal;});
+  document.getElementById('cfg-w').value=cfg.weight||''
+  document.getElementById('cfg-h').value=cfg.height||''
+  document.getElementById('cfg-age').value=cfg.age||''
+  document.getElementById('cfg-k').value=cfg.goalKcal||''
+  document.getElementById('cfg-p').value=cfg.goalProt||''
+  document.getElementById('cfg-c').value=cfg.goalCarb||''
+  document.getElementById('cfg-f').value=cfg.goalFat||''
+  document.getElementById('cfg-apikey').value=cfg.apiKey||''
+  setCfgSex(cfg.sex||'m');
+  const k=dk(new Date()),day=getDay(k);
+  let tp=0,tf=0,tc=0,tk=0;day.foods.forEach(f=>{tp+=f.prot;tf+=f.fat;tc+=f.carb;tk+=f.kcal;});
   const b=day.burned||0;
   document.getElementById('c-p').textContent=r1(tp)+'g';
   document.getElementById('c-c').textContent=r1(tc)+'g';
@@ -1013,11 +1179,14 @@ function renderCfg(){
 }
 document.getElementById('save-cfg').onclick=()=>{
   cfg.weight=parseFloat(document.getElementById('cfg-w').value)||80;
+  cfg.height=parseFloat(document.getElementById('cfg-h').value)||175;
+  cfg.age=parseFloat(document.getElementById('cfg-age').value)||25;
   cfg.goalKcal=parseInt(document.getElementById('cfg-k').value)||2500;
   cfg.goalProt=parseInt(document.getElementById('cfg-p').value)||160;
   cfg.goalCarb=parseInt(document.getElementById('cfg-c').value)||200;
   cfg.goalFat=parseInt(document.getElementById('cfg-f').value)||70;
-  saveCfg(); toast('✓ Ajustes guardados'); renderCfg();
+  cfg.apiKey=document.getElementById('cfg-apikey').value.trim();
+  saveCfg();toast('✓ Ajustes guardados');renderCfg();
 };
 
 // ══ PWA ══
@@ -1027,17 +1196,17 @@ document.getElementById('instbtn').onclick=async()=>{if(!dPr)return;dPr.prompt()
 
 // ══ TOAST ══
 let tTimer=null;
-function toast(msg){
-  const el=document.getElementById('toast');
-  el.textContent=msg;el.className='show ok';
-  clearTimeout(tTimer);tTimer=setTimeout(()=>el.className='',2200);
-}
+function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.className='show ok';clearTimeout(tTimer);tTimer=setTimeout(()=>el.className='',2400);}
 
 // ══ SERVICE WORKER ══
 if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(()=>{});
 
 // ══ INIT ══
-renderHoy();
+if(localStorage.getItem('onboarded')){
+  goScreen('hoy');
+} else {
+  goScreen('onboard');
+}
 </script>
 </body>
 </html>
