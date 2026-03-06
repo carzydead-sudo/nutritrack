@@ -233,6 +233,21 @@ nav{
 
 
 
+
+/* entrada manual */
+.manual-panel{margin:10px 14px 0;background:var(--s1);border:1.5px solid rgba(200,255,0,.2);border-radius:18px;padding:18px;display:none;}
+.manual-panel.show{display:block;animation:sdown .2s ease;}
+.manual-panel h3{font-size:13px;font-weight:800;color:var(--muted2);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;}
+.manual-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+.mfield{display:flex;flex-direction:column;gap:5px;}
+.mfield label{font-size:9px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1.2px;}
+.mfield input{background:var(--s2);border:1.5px solid var(--border);border-radius:10px;padding:10px 12px;color:var(--text);font-family:inherit;font-size:17px;font-weight:800;transition:border-color .2s;width:100%;}
+.mfield input:focus{outline:none;border-color:var(--acc);}
+.mfield.full{grid-column:1/-1;}
+.mname-input{background:var(--s2);border:1.5px solid var(--border);border-radius:10px;padding:10px 12px;color:var(--text);font-family:inherit;font-size:15px;font-weight:600;width:100%;margin-bottom:14px;transition:border-color .2s;}
+.mname-input:focus{outline:none;border-color:var(--acc);}
+.mname-input::placeholder{color:var(--muted);}
+
 /* quemadas en historial */
 .burned-section{margin:0 14px 10px;background:var(--s1);border:1px solid var(--border);border-radius:18px;padding:18px;}
 .burned-section h3{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
@@ -339,6 +354,7 @@ nav{
         <button class="stab on" id="tab-local" onclick="switchTab('local')">Mis alimentos</button>
         <button class="stab" id="tab-favs" onclick="switchTab('favs')">⭐ Favoritos</button>
         <button class="stab" id="tab-web" onclick="switchTab('web')">🌐 Web</button>
+        <button class="stab" id="tab-manual" onclick="switchTab('manual')">✏️ Manual</button>
       </div>
       <div class="rlist" id="rlist"></div>
       <div class="fpanel" id="fpanel">
@@ -361,6 +377,35 @@ nav{
           <button class="abtn" id="confirm-add">+ Agregar</button>
           <button class="fbtn" id="fav-btn">⭐</button>
         </div>
+      </div>
+
+      <!-- ENTRADA MANUAL -->
+      <div class="manual-panel" id="manual-panel">
+        <h3>✏️ Entrada manual</h3>
+        <input class="mname-input" id="m-name" type="text" placeholder="Nombre (ej: Pizza casera, Snack, etc.)">
+        <div class="manual-grid">
+          <div class="mfield full">
+            <label>⚡ Calorías (obligatorio)</label>
+            <input id="m-kcal" type="number" inputmode="numeric" placeholder="0">
+          </div>
+          <div class="mfield">
+            <label style="color:var(--prot)">Proteína (g)</label>
+            <input id="m-prot" type="number" inputmode="decimal" placeholder="0">
+          </div>
+          <div class="mfield">
+            <label style="color:var(--carb)">Carbohidratos (g)</label>
+            <input id="m-carb" type="number" inputmode="decimal" placeholder="0">
+          </div>
+          <div class="mfield">
+            <label style="color:var(--fat)">Grasas (g)</label>
+            <input id="m-fat" type="number" inputmode="decimal" placeholder="0">
+          </div>
+          <div class="mfield">
+            <label>Cantidad</label>
+            <input id="m-amount" type="number" inputmode="decimal" placeholder="1">
+          </div>
+        </div>
+        <button class="abtn" id="confirm-manual">+ Agregar</button>
       </div>
     </section>
 
@@ -579,7 +624,7 @@ const FOODS=[
 
 // ══ STATE ══
 let viewDate=new Date(); viewDate.setHours(0,0,0,0);
-function dk(d){return d.toISOString().split('T')[0];}
+function dk(d){const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');return y+'-'+m+'-'+day;}
 function getDay(k){try{return JSON.parse(localStorage.getItem('day_'+k)||'null')||{foods:[],burned:0};}catch{return{foods:[],burned:0};}}
 function saveDay(k,d){localStorage.setItem('day_'+k,JSON.stringify(d));}
 let cfg=JSON.parse(localStorage.getItem('cfg')||'null')||{weight:80,goalKcal:2500,goalProt:160,goalCarb:200,goalFat:70};
@@ -703,9 +748,16 @@ document.getElementById('save-burned').onclick=()=>{
 // ══ ADD ══
 let curTab='local', selFood=null, webRes=[], webTimer=null;
 function switchTab(t){
-  curTab=t;['local','favs','web'].forEach(x=>document.getElementById('tab-'+x).classList.toggle('on',x===t));
-  document.getElementById('fpanel').classList.remove('show'); selFood=null; webRes=[];
-  renderList();
+  curTab=t;
+  ['local','favs','web','manual'].forEach(x=>document.getElementById('tab-'+x).classList.toggle('on',x===t));
+  document.getElementById('fpanel').classList.remove('show');
+  selFood=null; webRes=[];
+  // show/hide manual panel and search bar
+  const isManual=t==='manual';
+  document.getElementById('manual-panel').classList.toggle('show', isManual);
+  document.querySelector('.sbar').style.display=isManual?'none':'block';
+  document.querySelector('.stabs').style.position=isManual?'static':'sticky';
+  if(!isManual) renderList();
 }
 const sinp=document.getElementById('search-inp'), xbtn=document.getElementById('xbtn');
 sinp.addEventListener('input',()=>{
@@ -786,6 +838,25 @@ document.getElementById('fav-btn').onclick=()=>{
   else{favs.push(selFood.id);toast('⭐ Favorito guardado');}
   saveFavs(); document.getElementById('fav-btn').classList.toggle('on',favs.includes(selFood.id));
   renderList();
+};
+
+
+// ── ENTRADA MANUAL ──
+document.getElementById('confirm-manual').onclick=()=>{
+  const kcal=parseFloat(document.getElementById('m-kcal').value)||0;
+  if(kcal<=0){toast('Ingresá las calorías');return;}
+  const name=document.getElementById('m-name').value.trim()||'Entrada manual';
+  const prot=parseFloat(document.getElementById('m-prot').value)||0;
+  const carb=parseFloat(document.getElementById('m-carb').value)||0;
+  const fat=parseFloat(document.getElementById('m-fat').value)||0;
+  const amount=parseFloat(document.getElementById('m-amount').value)||1;
+  const entry={name,amount,unit:'u',prot,fat,carb,sat:0,kcal};
+  const k=dk(viewDate), day=getDay(k);
+  day.foods.push(entry); saveDay(k,day);
+  toast('✓ '+name+' agregado');
+  // clear fields
+  ['m-name','m-kcal','m-prot','m-carb','m-fat','m-amount'].forEach(id=>document.getElementById(id).value='');
+  goScreen('hoy');
 };
 
 // ── WEB SEARCH (Open Food Facts) ──
