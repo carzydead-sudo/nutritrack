@@ -123,7 +123,7 @@ nav{height:calc(var(--nav-h) + var(--sb));padding-bottom:var(--sb);background:rg
 .empty p{font-size:13px;font-weight:500;}
 
 /* ADD */
-.sbar{padding:12px 14px 0;position:sticky;top:calc(var(--st) + 56px);z-index:15;}
+.sbar{padding:0 14px 12px;}
 .swrap{position:relative;}
 .sinput{width:100%;background:var(--s1);border:1.5px solid var(--border);border-radius:14px;padding:14px 14px 14px 46px;color:var(--text);font-family:inherit;font-size:15px;font-weight:600;transition:border-color .2s;}
 .sinput::placeholder{color:var(--muted);}
@@ -131,7 +131,7 @@ nav{height:calc(var(--nav-h) + var(--sb));padding-bottom:var(--sb);background:rg
 .sico{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none;}
 .xbtn{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:var(--s3);border:none;border-radius:99px;width:22px;height:22px;color:var(--muted2);cursor:pointer;font-size:14px;display:none;align-items:center;justify-content:center;}
 .xbtn.show{display:flex;}
-.stabs{display:flex;gap:6px;padding:8px 14px 4px;position:sticky;top:calc(var(--st) + 116px);z-index:15;background:linear-gradient(to bottom,var(--bg) 80%,transparent);overflow-x:auto;}
+.stabs{display:flex;gap:6px;padding:8px 14px 4px;overflow-x:auto;background:var(--bg);}
 .stabs::-webkit-scrollbar{display:none;}
 .stab{padding:6px 14px;border-radius:99px;font-size:11px;font-weight:800;border:1.5px solid var(--border);background:none;color:var(--muted2);cursor:pointer;font-family:inherit;transition:all .15s;letter-spacing:.3px;white-space:nowrap;flex-shrink:0;}
 .stab.on{background:var(--acc-dim);border-color:rgba(200,255,0,.3);color:var(--acc);}
@@ -423,8 +423,7 @@ nav{height:calc(var(--nav-h) + var(--sb));padding-bottom:var(--sb);background:rg
           </div>
         </div>
         <div class="srow">
-          <div class="sbox acc"><div class="sv" id="s-net">0</div><div class="sl">Netas</div></div>
-          <div class="sbox"><div class="sv" id="s-burned">0</div><div class="sl">Quemadas</div></div>
+          <div class="sbox acc"><div class="sv" id="s-burned">0</div><div class="sl">Quemadas</div></div>
           <div class="sbox"><div class="sv" id="s-pgkg">—</div><div class="sl">g prot/kg</div></div>
           <div class="sbox"><div class="sv" id="s-pct">0%</div><div class="sl">% Prot</div></div>
         </div>
@@ -439,7 +438,8 @@ nav{height:calc(var(--nav-h) + var(--sb));padding-bottom:var(--sb);background:rg
 
     <!-- AGREGAR -->
     <section class="screen" id="sc-add">
-      <div class="ph"><div class="ptitle">Agregar</div></div>
+      <div style="position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--border);padding:calc(var(--st) + 14px) 14px 12px;">
+        <div class="ptitle" style="margin-bottom:12px;">Agregar</div>
       <div class="sbar" id="sbar">
         <div class="swrap">
           <svg class="sico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -453,6 +453,7 @@ nav{height:calc(var(--nav-h) + var(--sb));padding-bottom:var(--sb);background:rg
         <button class="stab" id="tab-web" onclick="switchTab('web')">🌐 Web</button>
         <button class="stab" id="tab-manual" onclick="switchTab('manual')">✏️ Manual</button>
         <button class="stab" id="tab-foto" onclick="switchTab('foto')">📷 Foto IA</button>
+      </div>
       </div>
       <div class="rlist" id="rlist"></div>
       <div class="fpanel" id="fpanel">
@@ -538,10 +539,8 @@ nav{height:calc(var(--nav-h) + var(--sb));padding-bottom:var(--sb);background:rg
         </div>
       </div>
       <div class="balance-grid">
-        <div class="bg-card acc"><div class="bv" id="bg-ingeridas">—</div><div class="bl">Ingeridas</div></div>
         <div class="bg-card fire"><div class="bv" id="bg-quemadas">—</div><div class="bl">Quemadas</div></div>
-        <div class="bg-card"><div class="bv" id="bg-meta">—</div><div class="bl">Meta kcal</div></div>
-        <div class="bg-card"><div class="bv" id="bg-netas">—</div><div class="bl">Netas</div></div>
+        <div class="bg-card acc"><div class="bv" id="bg-meta">—</div><div class="bl">Meta kcal</div></div>
       </div>
       <!-- GRÁFICO -->
       <div class="cchart">
@@ -838,7 +837,6 @@ function renderHoy(){
   document.getElementById('vp').textContent=r1(tp)+'g';
   document.getElementById('vc').textContent=r1(tc)+'g';
   document.getElementById('vf').textContent=r1(tf)+'g';
-  document.getElementById('s-net').textContent=Math.round(net);
   document.getElementById('s-burned').textContent=Math.round(burned);
   document.getElementById('s-pgkg').textContent=cfg.weight>0?r1(tp/cfg.weight):'—';
   const tot=tp+tf+tc;
@@ -928,7 +926,8 @@ function showPanel(f){
   document.getElementById('fpsub').textContent=f.unit==='u'?'Valores por unidad':`Valores por ${f.porc}${f.unit}`;
   document.getElementById('fpchips').innerHTML=`<span class="chip cp">P: ${f.prot}g</span><span class="chip cc">C: ${f.carb}g</span><span class="chip cf">G: ${f.fat}g</span><span class="chip ck">${f.kcal} kcal</span>`;
   document.getElementById('gunit').textContent=f.unit==='u'?'unidades':f.unit;
-  document.getElementById('ginput').value=f.porc;
+  document.getElementById('ginput').value='';
+  document.getElementById('ginput').placeholder=f.unit==='u'?'1':f.porc;
   updatePreview();p.classList.add('show');
   document.getElementById('fav-btn').classList.toggle('on',favs.includes(f.id));
   setTimeout(()=>p.scrollIntoView({behavior:'smooth',block:'nearest'}),100);
@@ -936,7 +935,8 @@ function showPanel(f){
 document.getElementById('ginput').addEventListener('input',updatePreview);
 function updatePreview(){
   if(!selFood)return;
-  const amt=parseFloat(document.getElementById('ginput').value)||0;
+  const inp=document.getElementById('ginput');
+  const amt=parseFloat(inp.value)||parseFloat(inp.placeholder)||selFood.porc;
   const ratio=selFood.unit==='u'?amt:amt/selFood.porc;
   document.getElementById('pv-k').textContent=Math.round(selFood.kcal*ratio);
   document.getElementById('pv-p').textContent=r1(selFood.prot*ratio)+'g';
@@ -945,7 +945,8 @@ function updatePreview(){
 }
 document.getElementById('confirm-add').onclick=()=>{
   if(!selFood)return;
-  const amt=parseFloat(document.getElementById('ginput').value)||0;
+  const ginp=document.getElementById('ginput');
+  const amt=parseFloat(ginp.value)||parseFloat(ginp.placeholder)||0;
   if(amt<=0){toast('Ingresá una cantidad');return;}
   const ratio=selFood.unit==='u'?amt:amt/selFood.porc;
   const entry={name:selFood.name,amount:amt,unit:selFood.unit==='u'?'u':selFood.unit,prot:selFood.prot*ratio,fat:selFood.fat*ratio,carb:selFood.carb*ratio,sat:(selFood.sat||0)*ratio,kcal:selFood.kcal*ratio};
@@ -1093,10 +1094,8 @@ function renderHist(){
   const balance=todayNetas-cfg.goalKcal;
   const defCard=document.getElementById('deficit-card'),defVal=document.getElementById('deficit-val');
   const defSub=document.getElementById('deficit-sub'),defIcon=document.getElementById('deficit-icon');
-  document.getElementById('bg-ingeridas').textContent=Math.round(todayKcal)+' kcal';
   document.getElementById('bg-quemadas').textContent=Math.round(todayBurned)+' kcal';
   document.getElementById('bg-meta').textContent=Math.round(cfg.goalKcal)+' kcal';
-  document.getElementById('bg-netas').textContent=Math.round(todayNetas)+' kcal';
   if(todayKcal===0){defCard.className='deficit-card neutral';defVal.className='dc-val neutral';defVal.textContent='—';defIcon.textContent='⚖️';defSub.textContent='Sin comidas registradas hoy';}
   else if(balance<0){defCard.className='deficit-card green';defVal.className='dc-val green';defVal.textContent='-'+Math.round(Math.abs(balance))+' kcal';defIcon.textContent='📉';defSub.textContent='Déficit · Meta: '+Math.round(cfg.goalKcal)+' kcal';}
   else if(balance>0){defCard.className='deficit-card red';defVal.className='dc-val red';defVal.textContent='+'+Math.round(balance)+' kcal';defIcon.textContent='📈';defSub.textContent='Superávit · Meta: '+Math.round(cfg.goalKcal)+' kcal';}
